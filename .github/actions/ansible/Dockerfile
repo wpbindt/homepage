@@ -10,6 +10,7 @@ RUN apt-get install -y\
     libc-dev\ 
     libffi-dev\ 
     libssl-dev\
+    ssh\
     rsync
 COPY entrypoint.sh /entrypoint.sh
 
