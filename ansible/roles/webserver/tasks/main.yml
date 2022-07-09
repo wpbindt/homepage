@@ -36,7 +36,6 @@
     dest: "/var/www/{{ item.name }}/"
     delete: yes
   with_items: "{{ webserver_static_sites }}"
-  notify: Reload nginx
 
 - name: Enable sites
   file:
@@ -44,4 +43,3 @@
     dest: "/etc/nginx/sites-enabled/{{ item.name }}"
     state: link
   with_items: "{{ webserver_static_sites }}"
-  notify: Reload nginx
