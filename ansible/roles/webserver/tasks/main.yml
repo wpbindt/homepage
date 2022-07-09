@@ -35,8 +35,6 @@
     src: "{{ item.root }}/"
     dest: "/var/www/{{ item.name }}/"
     delete: yes
-    rsync_opts:
-      - "--rsh=rsh"
   with_items: "{{ webserver_static_sites }}"
 
 - name: Enable sites
