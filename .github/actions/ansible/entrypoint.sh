@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/sh
 
 echo "$VAULT_PASS" > ~/.vault_pass.txt
 mkdir ~/.ssh
