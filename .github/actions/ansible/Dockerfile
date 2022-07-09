@@ -1,9 +1,9 @@
-FROM alpine:latest
+FROM python:3-alpine
 
 ENV ANSIBLE_HOST_KEY_CHECKING=False
 
-RUN apk add ansible gcc python3-dev libc-dev libffi-dev openssl-dev
-RUN pip3 install --upgrade paramiko
+RUN apk add ansible
+RUN python3 -m pip install --upgrade paramiko
 COPY entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
