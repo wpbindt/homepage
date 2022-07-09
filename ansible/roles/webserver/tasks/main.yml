@@ -34,6 +34,7 @@
   synchronize:
     src: "{{ item.root }}/"
     dest: "/var/www/{{ item.name }}/"
+    delete: yes
   with_items: "{{ webserver_static_sites }}"
   notify: Reload nginx
 
