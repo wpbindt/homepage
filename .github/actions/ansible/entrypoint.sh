@@ -9,5 +9,5 @@ cat ~/.ssh/id_rsa
 ssh -i ~/.ssh/id_rsa -o "StrictHostKeyChecking=no" wessel@109.237.219.178 
 
 
-ansible-playbook -e "build_sha=$GITHUB_SHA" --vault-password-file ~/.vault_pass.txt -i ansible/inventory.ini ansible/site.yml
+ansible-playbook -e "build_sha=$GITHUB_SHA" --vault-password-file ~/.vault_pass.txt -i ansible/inventory.ini ansible/site.yml --key-file=~/.ssh/id_rsa
 
