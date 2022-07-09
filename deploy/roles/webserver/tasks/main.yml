@@ -12,3 +12,35 @@
     group: root
     mode: 0644
   notify: Reload nginx
+
+- name: Add nginx site config
+  copy:
+    dest: "/{{ item.conf }}"
+    src: "{{ item.conf }}"
+    owner: root
+    group: root
+    mode: 0644
+  notify: Reload nginx
+  with_items: "{{ webserver_static_sites }}"
+
+- name: Ensure content dirs exist
+  file:
+    path: "/var/www/{{ item.name }}/"
+    mode: 0755
+    state: directory
+  with_items: "{{ webserver_static_sites }}"
+
+- name: Upload content
+  synchronize:
+    src: "{{ item.root }}/"
+    dest: "/var/www/{{ item.name }}/"
+  with_items: "{{ webserver_static_sites }}"
+  notify: Reload nginx
+
+- name: Enable sites
+  file:
+    src: "/{{ item.conf }}"
+    dest: "/etc/nginx/sites-enabled/{{ item.name }}"
+    state: link
+  with_items: "{{ webserver_static_sites }}"
+  notify: Reload nginx

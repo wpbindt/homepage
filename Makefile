@@ -1,2 +1,2 @@
 deploy-website:
-	ansible-playbook -i deploy/inventory.ini deploy/site.yml
+	ansible-playbook -vvv -i deploy/inventory.ini deploy/site.yml
