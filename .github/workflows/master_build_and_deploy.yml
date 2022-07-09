@@ -1,0 +1,6 @@
+deploy:
+  runs-on: ubuntu-latest
+  steps:
+  - uses: ./.github/actions/ansible
+    env:
+      VAULT_PASS: ${{ secrets.VAULT_PASS }}
