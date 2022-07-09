@@ -13,15 +13,15 @@
     mode: 0644
   notify: Reload nginx
 
-- name: Add nginx site config
+- name: Add nginx site-specific configs
   copy:
     dest: "/{{ item.conf }}"
     src: "{{ item.conf }}"
     owner: root
     group: root
     mode: 0644
-  notify: Reload nginx
   with_items: "{{ webserver_static_sites }}"
+  notify: Reload nginx
 
 - name: Ensure content dirs exist
   file:
