@@ -2,4 +2,3 @@
 
 webserver_packages:
   - nginx
-  - openssh
