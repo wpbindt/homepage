@@ -10,12 +10,18 @@ jobs:
           python-version: 3.8
       - run: |
           python generator/generate_homepage.py
-
+      - uses: actions/upload-artifact@v2
+        with:
+          name: index-page
+          path: content/index.html
   deploy:
     runs-on: ubuntu-latest
     needs: generate
     steps:
     - uses: actions/checkout@v1
     - uses: ./.github/actions/ansible
+    - uses: actions/download-artifact@v2
+      with:
+        name: index-page
       env:
         VAULT_PASS: ${{ secrets.VAULT_PASS }}
