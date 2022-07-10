@@ -22,6 +22,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: index-page
+        path: content/index.html
     - uses: ./.github/actions/ansible
       env:
         VAULT_PASS: ${{ secrets.VAULT_PASS }}
