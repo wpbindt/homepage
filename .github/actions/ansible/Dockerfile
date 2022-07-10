@@ -1,15 +1,9 @@
-FROM debian:buster 
+FROM cytopia/ansible
 
 ENV ANSIBLE_HOST_KEY_CHECKING=False
 
 RUN apt-get update
-RUN apt-get install -y\
-    ansible\ 
-    gcc\ 
-    python3-dev\
-    libc-dev\ 
-    libffi-dev\ 
-    libssl-dev\
+RUN apk add \
     ssh\
     rsync
 COPY entrypoint.sh /entrypoint.sh
