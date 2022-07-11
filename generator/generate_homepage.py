@@ -5,7 +5,7 @@ BASE_URL = '109.237.219.178'
 
 def filename_to_anchor(subdirectory: str, filename: str) -> str:
     link_text = ' '.join(filename[:-len('.html')].split('-'))
-    return f'<li><a href="{BASE_URL}/{subdirectory}/{filename}">{link_text}</a></li>\n'
+    return f'<li><a href="http://{BASE_URL}/{subdirectory}/{filename}">{link_text}</a></li>\n'
 
 
 html = '<body>\n'
