@@ -12,7 +12,7 @@ html = '<body>\n'
 html += '<h1>My homepage</h1>\n'
 
 for subdirectory in os.listdir('content'):
-    html += '<h2>subdirectory</h2>\n<ul>\n'
+    html += f'<h2>{subdirectory}</h2>\n<ul>\n'
     for filename in os.listdir(f'content/{subdirectory}'):
         html += filename_to_anchor(subdirectory, filename)
     html += '</ul>'
