@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+stat vault_pass.txt
 CURRENT_DATE=$(date --iso-8601)
 ssh-keygen -N "" -t rsa -q -C ansible-deploy-key-$CURRENT_DATE -f ssh_key.txt.secret
 ansible-vault encrypt --vault-password-file vault_pass.txt ssh_key.txt.secret
