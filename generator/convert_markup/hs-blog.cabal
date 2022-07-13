@@ -1,0 +1,39 @@
+cabal-version:      2.4
+name:               hs-blog
+version:            0.1.0.0
+
+synopsis: package to generate html from markup language
+
+description: bla bla bla
+
+author:             wpbindt
+maintainer:         wesselbindt@gmail.com
+
+common common-settings
+    default-language: Haskell2010
+    ghc-options:
+        -Wall
+
+library
+    import: common-settings
+    exposed-modules: 
+        HsBlog
+            HsBlog.Convert
+            HsBlog.Html
+            HsBlog.Markup
+    build-depends:    
+        base ^>=4.13.0.0
+        , directory
+        , filepath
+    hs-source-dirs: src
+
+executable haskell-blog-generator
+    import: common-settings
+    hs-source-dirs: app
+    main-is: Main.hs
+    build-depends:
+        base ^>=4.13.0.0
+        , hs-blog
+        , optparse-applicative
+    ghc-options:
+        -O
