@@ -23,7 +23,6 @@ library
             HsBlog.Markup
     build-depends:    
         base ^>=4.16.2.0
-.0
         , directory
         , filepath
     hs-source-dirs: src
