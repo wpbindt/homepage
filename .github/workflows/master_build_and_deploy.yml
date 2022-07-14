@@ -6,6 +6,11 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: ./.github/actions/build-generator
+    - uses: actions/upload-artifact@v2
+      with:
+        name: markup-parser
+        path: generator/convert_markup/dist-newstyle/build/x86_64-linux/ghc-8.8.4/hs-blog-0.1.0.0/x/haskell-blog-generator/build/haskell-blog-generator/haskell-blog-generator
+
   generate:
     runs-on: ubuntu-latest
     steps:
