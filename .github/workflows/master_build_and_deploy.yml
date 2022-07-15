@@ -6,7 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: | 
-        dockers/markdown-parser/build_docker_image.sh
+        dockers/markdown_parser_builder/build_docker_image.sh
 
   build-generator:
     runs-on: ubuntu-latest
