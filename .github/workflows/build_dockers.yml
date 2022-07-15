@@ -1,0 +1,13 @@
+on: 
+  push:
+    paths:
+      - 'dockers/**'
+
+jobs:
+  build-parser-builder-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: | 
+        dockers/markdown_parser_builder/build_docker_image.sh
+
