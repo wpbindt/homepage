@@ -37,6 +37,6 @@ Consider the situation where we build a Docker image in the pipeline, and at som
     <li>If some event triggers both X and the build, then we want X to wait for the build to finish</li>
     <li>If X is triggered, but the build is not, we still want X to be able to access the image</li>
 </ul>
-The first point implies that we have to put the image building in a workflow separate from X, since <b>jobs cannot be run conditionally</b>. The second point then implies that we would have to make the workflow containing X wait for the workflow which builds the image. <b>Workflows are not able to wait for each other</b>, so this is not possible.
+The first point implies that we have to put the image building in a workflow separate from X, since <b>jobs cannot be run conditionally</b>. The second point then implies that we would have to make the workflow containing X wait for the workflow which builds the image. <b>Workflows are not able to wait for each other</b>, so this is not possible. Another spanner in the works is that we need to use artifacts from the build workflow in the workflow containing X, which as of yet also does not seem to be possible cleanly. (There is a REST API for downloading an archive of workflow artifacts, but come on)
 </p>
 </body>
