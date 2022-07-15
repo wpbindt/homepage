@@ -1,6 +1,13 @@
 on: push
 
 jobs:
+  build-parser-builder-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - run: | 
+        dockers/markdown-parser/build_docker_image.sh
+
   build-generator:
     runs-on: ubuntu-latest
     steps:
