@@ -22,7 +22,7 @@ library
             HsBlog.Html
             HsBlog.Markup
     build-depends:    
-        base ^>=4.13.0.0
+        base >=4.16.0.0
         , directory
         , filepath
     hs-source-dirs: src
@@ -32,8 +32,7 @@ executable haskell-blog-generator
     hs-source-dirs: app
     main-is: Main.hs
     build-depends:
-        base ^>=4.13.0.0
+        base >=4.16.0.0
         , hs-blog
-        , optparse-applicative
     ghc-options:
         -O
