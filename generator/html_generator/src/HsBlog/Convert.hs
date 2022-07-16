@@ -1,7 +1,7 @@
-module HtmlGenerator.Convert where
+module HsBlog.Convert where
 
-import qualified HtmlGenerator.Markup as Markup
-import qualified HtmlGenerator.Html as Html
+import qualified HsBlog.Markup as Markup
+import qualified HsBlog.Html as Html
 
 convertStructure :: Markup.Structure -> Html.Structure
 convertStructure structure = case structure of

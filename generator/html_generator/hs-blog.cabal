@@ -1,8 +1,10 @@
 cabal-version:      2.4
-name:               html-generator
+name:               hs-blog
 version:            0.1.0.0
 
 synopsis: package to generate html from markup language
+
+description: bla bla bla
 
 author:             wpbindt
 maintainer:         wesselbindt@gmail.com
@@ -25,12 +27,12 @@ library
         , filepath
     hs-source-dirs: src
 
-executable html-generator
+executable haskell-blog-generator
     import: common-settings
     hs-source-dirs: app
     main-is: Main.hs
     build-depends:
         base >=4.16.0.0
-        , hmtl-generator
+        , hs-blog
     ghc-options:
         -O

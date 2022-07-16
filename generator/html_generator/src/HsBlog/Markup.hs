@@ -1,4 +1,4 @@
-module HtmlGenerator.Markup where
+module HsBlog.Markup where
 
 import Data.Maybe
 
