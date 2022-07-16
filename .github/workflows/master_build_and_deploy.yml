@@ -25,9 +25,7 @@ jobs:
           name: html-generator
           path: generator/html_generator
       - run: |
-          ls -l generator/html_generator
-      - run: |
-          whoami
+          chmod +x generator/html_generator
       - run: |
           python generator/generate.py
       - run: |
