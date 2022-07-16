@@ -1,4 +1,4 @@
-module HsBlog.Html
+module HtmlGenerator.Html
     ( Html
     , Title
     , Structure

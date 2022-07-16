@@ -17,10 +17,10 @@ common common-settings
 library
     import: common-settings
     exposed-modules: 
-        HsBlog
-            HsBlog.Convert
-            HsBlog.Html
-            HsBlog.Markup
+        HtmlGenerator
+            HtmlGenerator.Convert
+            HtmlGenerator.Html
+            HtmlGenerator.Markup
     build-depends:    
         base >=4.16.0.0
         , directory
