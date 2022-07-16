@@ -30,8 +30,8 @@ jobs:
           python generator/generate_homepage.py
       - uses: actions/upload-artifact@v2
         with:
-          name: index-page
-          path: static/index.html
+          name: static
+          path: static/
 
   deploy:
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/download-artifact@v2
       with:
-        name: index-page
+        name: static
         path: static
     - uses: ./.github/actions/ansible
       env:
