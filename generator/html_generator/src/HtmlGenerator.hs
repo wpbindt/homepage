@@ -42,4 +42,3 @@ main = do
             readConvertWrite (takeBaseName inputFile) (readFile inputFile) (safeWrite outputFile)
         _ -> 
             putStrLn "Wrong usage"
-
