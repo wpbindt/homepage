@@ -25,7 +25,7 @@ jobs:
           name: html-generator
           path: generator/html_generator
       - run: |
-          chmod +x generator/html_generator
+          chmod +x generator/html_generator/html-generator
       - run: |
           python generator/generate.py
       - run: |
