@@ -1,8 +1,5 @@
 module HtmlGenerator.Markup where
 
-import Data.Maybe
-
-
 type Document = [Structure]
 
 type Line = String
@@ -38,9 +35,9 @@ getNewContext _ context = context
 
 
 getNewStructure :: ParsingContext -> ParsingContext -> Maybe Structure
-getNewStructure (ParagraphCX s1) (ParagraphCX s2) = Nothing
-getNewStructure (CodeBlockCX s1) (CodeBlockCX s2) = Nothing
-getNewStructure (OrderedListCX s1) (OrderedListCX s2) = Nothing
+getNewStructure (ParagraphCX _) (ParagraphCX _) = Nothing
+getNewStructure (CodeBlockCX _) (CodeBlockCX _) = Nothing
+getNewStructure (OrderedListCX _) (OrderedListCX _) = Nothing
 getNewStructure context _ = renderContext context
 
 
@@ -88,4 +85,3 @@ maybePrepend Nothing l = l
 
 trim :: String -> String
 trim = unwords . words
-
