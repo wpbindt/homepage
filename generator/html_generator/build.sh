@@ -7,7 +7,7 @@ else
 fi
 
 docker container run \
-    --rm -it \
+    --rm \
     --volume $(pwd)/dockers/html-generator-builder/scripts:/scripts \
     --volume $(pwd)/generator/html_generator:/workdir \
     --name html-generator-builder-container \
