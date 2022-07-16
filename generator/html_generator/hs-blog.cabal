@@ -27,7 +27,7 @@ library
         , filepath
     hs-source-dirs: src
 
-executable haskell-blog-generator
+executable html-generator
     import: common-settings
     hs-source-dirs: app
     main-is: Main.hs
