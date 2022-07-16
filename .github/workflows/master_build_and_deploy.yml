@@ -29,7 +29,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: index-page
-          path: content/index.html
+          path: static/index.html
 
   deploy:
     runs-on: ubuntu-latest
@@ -39,7 +39,7 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: index-page
-        path: content
+        path: static
     - uses: ./.github/actions/ansible
       env:
         VAULT_PASS: ${{ secrets.VAULT_PASS }}
