@@ -65,14 +65,6 @@ code_ :: String -> Structure
 code_ = Structure . el "pre" . escape
 
 
-head_ :: String -> Structure
-head_ = Structure . el "head"
-
-
-body_ :: String -> Structure
-body_ = Structure . el "body"
-
-
 p_ :: String -> Structure
 p_ = Structure . el "p" . escape
 
@@ -101,4 +93,3 @@ escapeChar c =
 
 escape :: String -> String
 escape = concat . map escapeChar
-

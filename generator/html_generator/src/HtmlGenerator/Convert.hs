@@ -18,5 +18,5 @@ convert :: Html.Title -> Markup.Document -> Html.Html
 convert title = Html.html_ title . convertDocument
 
 
+main :: IO ()
 main = putStrLn . show . convert "buh" . Markup.parse $ "*Main title\nfirst\nparagraph\n\n next paragraph\n   \nthird\n**Hi\n>Code\n>Line"
-
