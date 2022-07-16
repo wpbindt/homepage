@@ -1,0 +1,43 @@
+<body>
+    <p><b>15-7-2022</b></p>
+
+<p>
+Github actions organizes CI/CD as follows. Certain events (like pushing to a branch, opening a pull request, and so on) trigger workflows, which run jobs, which consist of steps, which may be actions. 
+
+Each job is run in its own virtual machine, and each step of the job runs in the same virtual machine, so a step can easily use the outcome of a previous step in the same job. 
+
+The jobs in a given workflow run in parallel by default. By specifying the <code>needs</code> parameter in the description of a job, you can have a job wait for another to finish:
+<pre>
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+        echo hi
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - run: |
+        echo mom
+</pre>
+Since each runs in its own separate virtual machine, it is a bit harder to share data between jobs. For this we can use the builtin actions <code>upload-artifact</code> and <code>download-artifact</code>. <p>
+<p>The <code>on</code> parameter can be used to trigger workflows on specific events. For example, to run a workflow only when changes are made to a directory <code>deploy/dockers</code>:
+<pre>
+on: 
+  push:
+    paths:
+      - "deploy/dockers/**"
+</pre>
+
+Consider the situation where we build a Docker image in the pipeline, and at some other point (call it X) in the pipeline spin up a container of that image. Assume that the workflow that uses the image gets triggered frequently. Now we want a number of things:
+<ul>
+    <li>We only want to build the image when Dockerfile-related files change</li>
+    <li>If some event triggers both X and the build, then we want X to wait for the build to finish</li>
+    <li>If X is triggered, but the build is not, we still want X to be able to access the image</li>
+</ul>
+The first point implies that we have to put the image building in a workflow separate from X, since <b>jobs cannot be run conditionally</b>. The second point then implies that we would have to make the workflow containing X wait for the workflow which builds the image. <b>Workflows are not able to wait for each other</b>, so this is not possible. Another spanner in the works is that we need to use artifacts from the build workflow in the workflow containing X, which as of yet also does not seem to be possible cleanly. (There is a REST API for downloading an archive of workflow artifacts, but come on)
+</p>
+</body>

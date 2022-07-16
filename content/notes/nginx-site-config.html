@@ -1,0 +1,26 @@
+<body>
+    <p><b>12-7-2022</b></p>
+
+<p>
+To serve this website, we use the following server block config:
+<pre>
+server {
+  listen 80;
+  listen [::]:80;  
+  
+  root /var/www/www.trial.com;  
+
+  location / {
+    index index.html;
+  }
+}
+</pre>
+The way nginx will parse a request is then as follows. </p>
+
+<p>
+First it will match the hostname in the request headers to the server names specified in the <code>server_name</code> part of the server blocks, defaulting to the default server flagged by <code>default_server</code>. Here, there is only one server block, so no server name was specified. All requests will be served by the server specified above.
+</p>
+<p>
+Then it will match the path part of the request uri to the location blocks inside the matched server block. Then, the uri path will be appended to the path specified in the root block, and nginx will serve the file located there. A special case is the empty path, which will result in the file specified in the index block.
+</p>
+</body>
