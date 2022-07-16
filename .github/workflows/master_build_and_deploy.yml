@@ -25,9 +25,9 @@ jobs:
           name: html-generator
           path: generator/html_generator
       - run: |
-        ls -l generator/html_generator
+          ls -l generator/html_generator
       - run: |
-        whoami
+          whoami
       - run: |
           python generator/generate.py
       - run: |
