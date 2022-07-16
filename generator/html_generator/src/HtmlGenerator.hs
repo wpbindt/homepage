@@ -1,12 +1,12 @@
-module HsBlog (main) where
+module HtmlGenerator (main) where
     
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
 import System.FilePath (takeBaseName)
 
-import qualified HsBlog.Convert as Convert
-import qualified HsBlog.Html as Html
-import qualified HsBlog.Markup as Markup
+import qualified HtmlGenerator.Convert as Convert
+import qualified HtmlGenerator.Html as Html
+import qualified HtmlGenerator.Markup as Markup
 
 
 convert :: Html.Title -> String -> String

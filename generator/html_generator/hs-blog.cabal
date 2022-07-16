@@ -17,23 +17,22 @@ common common-settings
 library
     import: common-settings
     exposed-modules: 
-        HsBlog
-            HsBlog.Convert
-            HsBlog.Html
-            HsBlog.Markup
+        HtmlGenerator
+            HtmlGenerator.Convert
+            HtmlGenerator.Html
+            HtmlGenerator.Markup
     build-depends:    
-        base ^>=4.13.0.0
+        base >=4.16.0.0
         , directory
         , filepath
     hs-source-dirs: src
 
-executable haskell-blog-generator
+executable html-generator
     import: common-settings
     hs-source-dirs: app
     main-is: Main.hs
     build-depends:
-        base ^>=4.13.0.0
+        base >=4.16.0.0
         , hs-blog
-        , optparse-applicative
     ghc-options:
         -O
