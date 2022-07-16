@@ -1,7 +1,0 @@
-<body>
-    <p><b>6-7-2022</b></p>
-
-    <p>I was under the impression that Python's <code>unittest.TestCase.tearDown</code> (and its async counterpart) only runs if all tests either fail or pass (so no uncaught exceptions).
-    I was also under the impression that <code>unittest.TestCase.addCleanup</code> (and its async counterpart) allows you to run teardown code regardless of uncaught exceptions in your test methods.
-    The first impression is wrong. <code>tearDown</code> is run regardless of uncaught exceptions in the test methods.</p>
-</body>
