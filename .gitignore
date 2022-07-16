@@ -1,4 +1,5 @@
 *.retry
 *.nocommit
+static/
 dist-newstyle/
 generator/html_generator/html-generator

@@ -1,4 +1,4 @@
 webserver_static_sites:
   - conf: etc/nginx/sites-available/www.trial.com
-    root: "{{ lookup('env', 'PWD') }}/content"
+    root: "{{ lookup('env', 'PWD') }}/static"
     name: www.trial.com
