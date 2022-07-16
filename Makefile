@@ -1,8 +1,14 @@
+.PHONY: deploy-website
 deploy-website:
 	ansible-playbook -i ansible/inventory.ini ansible/site.yml
+
+.PHONY: build-html-generator-builder-image
 build-html-generator-builder-image:
 	dockers/html-generator-builder/build_docker_image.sh
-build-html-generator:
+
+generator/html_generator/html-generator: build-html-generator-builder-image
 	generator/html_generator/build.sh
+
+.PHONY: clean-html-generator
 clean-html-generator:
 	generator/html_generator/build.sh clean
