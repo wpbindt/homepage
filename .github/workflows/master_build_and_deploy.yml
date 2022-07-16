@@ -9,6 +9,8 @@ jobs:
         with:
           python-version: 3.8
       - run: |
+          make generator/html_generator/html-generator
+      - run: |
           python generator/generate_homepage.py
       - uses: actions/upload-artifact@v2
         with:
