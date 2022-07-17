@@ -1,0 +1,16 @@
+on:
+  push:
+    paths:
+      - "a_folder/**"
+
+jobs:
+  write_message:
+    runs_on: ubuntu-latest
+    steps:
+      - run: |
+          echo "A ran!!" >> message.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: message
+          path: message.txt
+      - uses: ./.github/workflows/b.yml

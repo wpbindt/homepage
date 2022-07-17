@@ -1,0 +1,18 @@
+on:
+  push:
+    paths:
+      - "b_folder/**"
+      - "!a_folder/**"
+  workflow_call:
+
+jobs:
+  write_message:
+    runs_on: ubuntu-latest
+    steps:
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: a.yml
+      - run: |
+          echo "B ran!!" >> message.txt
+      - run: |
+          cat message.txt
