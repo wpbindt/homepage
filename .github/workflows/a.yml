@@ -7,6 +7,7 @@ jobs:
   write_message:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v1
       - run: |
           echo "A ran!!" >> message.txt
       - uses: actions/upload-artifact@v2
