@@ -1,8 +1,9 @@
 FROM haskell:9.2.3-slim
 
+RUN cabal update
+
 VOLUME /scripts
 VOLUME /workdir
-
-RUN cabal update
+WORKDIR /workdir
 
 ENTRYPOINT ["/bin/bash", "/scripts/entrypoint.sh"]

@@ -1,6 +1,5 @@
 #!/bin/env bash
 
-cd /workdir
 if [ $1 == "build" ]; then
     echo "Starting to build"
     /scripts/build.sh
