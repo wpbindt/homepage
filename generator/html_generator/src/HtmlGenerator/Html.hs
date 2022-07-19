@@ -84,8 +84,8 @@ render (Html s) = s
 escapeChar :: Char -> String
 escapeChar c = 
     case c of
-        '<' -> "$lt;"
-        '>' -> "$gt;"
+        '<' -> "&lt;"
+        '>' -> "&gt;"
         '&' -> "&amp;"
         '"' -> "&quot;"
         '\'' -> "&#39;"
