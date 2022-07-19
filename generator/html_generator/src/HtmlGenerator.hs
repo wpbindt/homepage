@@ -1,4 +1,4 @@
-module HtmlGenerator (main) where
+module HtmlGenerator (main, convert) where
     
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
