@@ -5,8 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: |
-          make generator/html_generator/html-generator
+      - name: Build compiler image
+        run: |
+          dockers/html-generator-builder/build_docker_image.sh
+      - name: Run html generator tests
+        run: |
+          generator/html_generator/build.sh test
+      - name: Compile html-generator
+        run: |
+          generator/html_generator/build.sh
       - uses: actions/upload-artifact@v2
         with:
           name: html-generator
