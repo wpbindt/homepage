@@ -6,7 +6,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: |
-          make generator/html_generator/html-generator
+          dockers/html-generator-builder/build_docker_image.sh
+      - run: |
+          generator/html_generator/build.sh test
+      - run: |
+          generator/html_generator/build.sh
       - uses: actions/upload-artifact@v2
         with:
           name: html-generator

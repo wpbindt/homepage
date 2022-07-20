@@ -1,8 +1,8 @@
 #!/bin/env bash
 
-cd $(pwd)/dockers/html-generator-builder
+DOCKER_PATH=$(pwd)/dockers/html-generator-builder
 
 docker image build \
     --tag html-generator-builder \
-    --file html_generator_builder.dockerfile \
-    .
+    --file $DOCKER_PATH/html_generator_builder.dockerfile \
+    $(pwd)/generator/html_generator
