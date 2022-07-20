@@ -28,7 +28,7 @@ convertHeaderSpec w = checkConversion ("Check header of weight " <> wString)
                   markup = (take w $ repeat '*') <> "bla"
                   openTag = "<h" <> wString <> ">"
                   closeTag = "</h" <> wString <> ">"
-                  html = "<html><head><tile>Some title</title></head><body>"
+                  html = "<html><head><title>Some title</title></head><body>"
                     <> openTag <> "bla" <> closeTag
                     <> "</body></html>"
 
