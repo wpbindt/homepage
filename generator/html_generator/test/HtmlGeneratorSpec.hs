@@ -3,11 +3,6 @@ module HtmlGeneratorSpec (spec) where
 import Test.Hspec
 import HtmlGenerator
 
-pendingTests :: Spec
-pendingTests = do
-    it "needs some tests" $ do
-        pending
-
 checkConversion :: String -> String -> String -> String -> Spec
 checkConversion message title markup html = it message $ (convert title markup) == html
 

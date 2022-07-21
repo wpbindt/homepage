@@ -41,8 +41,10 @@ test-suite html-generator-test
     import: common-settings
     type: exitcode-stdio-1.0
     hs-source-dirs: test
-    main-is: HtmlGeneratorSpec.hs
+    main-is: Spec.hs
     build-depends:
         base>=4.16.0.0
         , hspec>=2.7.4
         , hs-blog
+    build-tool-depends:
+        hspec-discover:hspec-discover
