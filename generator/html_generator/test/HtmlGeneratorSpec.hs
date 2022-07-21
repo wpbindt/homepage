@@ -27,6 +27,11 @@ convertHeaderSpec w = checkConversion ("Check header of weight " <> wString)
                     <> openTag <> "bla" <> closeTag
                     <> "</body></html>"
 
+escapeCharacterSpec :: String -> String -> Spec
+escapeCharacterSpec input output = checkConversion "Converts a paragraph to a paragraph"
+        "My title" input
+        ("<html><head><title>My title</title></head><body><p>" <> output <> "\n</p></body></html>")
+
 spec :: Spec
 spec = do
         convertHeaderSpec 1
@@ -34,3 +39,8 @@ spec = do
         convertHeaderSpec 3
         emptyConvertSpec
         convertParagraphSpec
+        escapeCharacterSpec "filler >" "filler &gt;"
+        escapeCharacterSpec "<" "&lt;"
+        escapeCharacterSpec "&" "&amp;"
+        escapeCharacterSpec "\"" "&quot;"
+        escapeCharacterSpec "'" "&#39;"
