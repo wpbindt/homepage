@@ -48,3 +48,5 @@ test-suite html-generator-test
         , hs-blog
     build-tool-depends:
         hspec-discover:hspec-discover
+    other-modules:
+        HtmlGeneratorSpec
