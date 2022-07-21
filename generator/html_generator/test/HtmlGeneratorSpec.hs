@@ -1,12 +1,7 @@
-module Main where
+module HtmlGeneratorSpec (spec) where
 
 import Test.Hspec
 import HtmlGenerator
-
-pendingTests :: Spec
-pendingTests = do
-    it "needs some tests" $ do
-        pending
 
 checkConversion :: String -> String -> String -> String -> Spec
 checkConversion message title markup html = it message $ (convert title markup) == html
@@ -32,11 +27,10 @@ convertHeaderSpec w = checkConversion ("Check header of weight " <> wString)
                     <> openTag <> "bla" <> closeTag
                     <> "</body></html>"
 
-
-main :: IO ()
-main = hspec $ do
-    emptyConvertSpec
-    convertParagraphSpec
-    convertHeaderSpec 1
-    convertHeaderSpec 2
-    convertHeaderSpec 3
+spec :: Spec
+spec = do
+        convertHeaderSpec 1
+        convertHeaderSpec 2
+        convertHeaderSpec 3
+        emptyConvertSpec
+        convertParagraphSpec
