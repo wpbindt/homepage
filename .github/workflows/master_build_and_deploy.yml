@@ -39,12 +39,9 @@ jobs:
       - name: Make html-generator executable
         run: |
           chmod +x generator/html_generator/html-generator
-      - name: Run html-generator
+      - name: Run html-generator and generate index
         run: |
           python generator/generate.py
-      - name: Generate index
-        run: |
-          python generator/generate_homepage.py
       - name: Upload generated html files
         uses: actions/upload-artifact@v2
         with:
