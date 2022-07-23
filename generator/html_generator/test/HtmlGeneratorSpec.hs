@@ -8,10 +8,10 @@ checkBodyConversion message markup body = it message $
         (convert "Some title" markup) == 
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
-emptyConvertSpec :: Spec
-emptyConvertSpec = checkBodyConversion 
-        "Converts an empty string to an empty document"
-        "" ""
+newlineConvertSpec :: Int -> Spec
+newlineConvertSpec n = checkBodyConversion
+        ("Converts " <> (show n) <> " newlines to an empty document")
+        (take n $ repeat '\n') ""
 
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
@@ -53,7 +53,11 @@ spec = do
         convertHeaderSpec 1
         convertHeaderSpec 2
         convertHeaderSpec 3
-        emptyConvertSpec
+        newlineConvertSpec 0
+        newlineConvertSpec 1
+        newlineConvertSpec 2
+        newlineConvertSpec 3
+        newlineConvertSpec 4
         convertParagraphSpec
         escapeCharacterSpec "filler >" "filler &gt;"
         escapeCharacterSpec "<" "&lt;"
