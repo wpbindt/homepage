@@ -6,7 +6,7 @@ deploy-website: static
 build-html-generator-builder-image:
 	dockers/html-generator-builder/build_docker_image.sh
 
-generator/html_generator/html-generator: build-html-generator-builder-image
+generator/html_generator/html-generator: #build-html-generator-builder-image
 	generator/html_generator/build.sh
 
 .PHONY: clean-html-generator
@@ -14,7 +14,7 @@ clean-html-generator:
 	generator/html_generator/build.sh clean
 
 static: generator/html_generator/html-generator
-	python3 generator/generate.py; python3 generator/generate_homepage.py
+	python3 generator/generate.py
 
 .PHONY: clean-static
 clean-static:
