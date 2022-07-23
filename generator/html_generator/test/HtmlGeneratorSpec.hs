@@ -18,6 +18,13 @@ convertParagraphSpec = checkBodyConversion
         "Converts a paragraph to a paragraph"
         "bla" "<p>bla\n</p>"
 
+convertMultipleParagraphSpec :: Spec
+convertMultipleParagraphSpec = checkBodyConversion
+        "Converts multiple paragraphs to paragraphs"
+        "bla di\nbla bla\n\nbla bla bla\n ding\n"
+        (   "<p>bla di\nbla bla\n</p>"
+         <> "<p>bla bla bla\n ding\n</p>")
+
 convertHeaderSpec :: Int -> Spec
 convertHeaderSpec w = checkBodyConversion ("Check header of weight " <> wString)
         markup body
@@ -53,4 +60,5 @@ spec = do
         escapeCharacterSpec "&" "&amp;"
         escapeCharacterSpec "\"" "&quot;"
         escapeCharacterSpec "'" "&#39;"
-        convertCodeSpec 
+        convertCodeSpec
+        convertMultipleParagraphSpec
