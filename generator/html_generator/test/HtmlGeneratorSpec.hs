@@ -47,6 +47,14 @@ convertCodeSpec = checkBodyConversion
         <> "    print(&#39;hi world&#39;)\n"
         <> "</pre>")
 
+orderedListSpec :: Spec
+orderedListSpec = checkBodyConversion
+        "It converts - at the start of the line to ordered list items"
+        "-item one\n-item two\n-item three"
+        (  "<ol><li><p>item one</p></li>"
+        <> "<li><p>item two</p></li>"
+        <> "<li><p>item three</p></li></ol>")
+
 
 spec :: Spec
 spec = do
@@ -66,3 +74,4 @@ spec = do
         escapeCharacterSpec "'" "&#39;"
         convertCodeSpec
         convertMultipleParagraphSpec
+        orderedListSpec
