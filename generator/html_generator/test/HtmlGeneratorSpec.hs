@@ -14,7 +14,8 @@ emptyConvertSpec = checkBodyConversion
         "" ""
 
 convertParagraphSpec :: Spec
-convertParagraphSpec = checkBodyConversion "Converts a paragraph to a paragraph"
+convertParagraphSpec = checkBodyConversion 
+        "Converts a paragraph to a paragraph"
         "bla" "<p>bla\n</p>"
 
 convertHeaderSpec :: Int -> Spec
@@ -27,8 +28,18 @@ convertHeaderSpec w = checkBodyConversion ("Check header of weight " <> wString)
                   body = openTag <> "bla" <> closeTag
 
 escapeCharacterSpec :: String -> String -> Spec
-escapeCharacterSpec input output = checkBodyConversion "Converts a paragraph to a paragraph"
+escapeCharacterSpec input output = checkBodyConversion 
+        ("Converts " <> input <> " to " <> output)
         input ("<p>" <> output <> "\n</p>")
+
+convertCodeSpec :: Spec
+convertCodeSpec = checkBodyConversion
+        "It convert > at the start of the line to <pre>"
+        ">def f():\n>    print('hi world')"
+        ("<pre>def f():\n"
+        <> "    print(&#39;hi world&#39;)\n"
+        <> "</pre>")
+
 
 spec :: Spec
 spec = do
@@ -42,3 +53,4 @@ spec = do
         escapeCharacterSpec "&" "&amp;"
         escapeCharacterSpec "\"" "&quot;"
         escapeCharacterSpec "'" "&#39;"
+        convertCodeSpec 
