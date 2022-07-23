@@ -6,7 +6,7 @@ deploy-website: static
 build-html-generator-builder-image:
 	dockers/html-generator-builder/build_docker_image.sh
 
-generator/html_generator/html-generator: #build-html-generator-builder-image
+generator/html_generator/html-generator: build-html-generator-builder-image
 	generator/html_generator/build.sh
 
 .PHONY: clean-html-generator
