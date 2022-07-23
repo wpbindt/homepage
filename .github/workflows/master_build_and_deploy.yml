@@ -60,6 +60,6 @@ jobs:
         name: static
         path: static
     - name: Run Ansible deployment playbook
-      uses: ./.github/actions/ansible
+      uses: ./dockers/ansible
       env:
         VAULT_PASS: ${{ secrets.VAULT_PASS }}
