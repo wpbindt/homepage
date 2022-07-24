@@ -14,6 +14,8 @@ checks that 1 is equal to itself. Running this gives the output
 The function
 >Test.Hspec.describe :: String -> SpecWith a -> SpecWith a
 can be used to group different code examples (akin to TestCases in xUnit frameworks). It also makes the output a bit nicer. For example,
+>import Test.Hspec (hspec, it, describe)
+> 
 >hspec (describe "the number 1" (it "is equal to itself" (1 == 1)))
 results in the output
 >the number 1
@@ -22,6 +24,8 @@ results in the output
 >Finished in 0.0001 seconds
 >1 example, 0 failures
 Now, when we deliberately write a failing test, for example
+>import Test.Hspec (hspec, it, describe)
+> 
 >hspec (describe "the number 1" (it "is equal to 2" (1 == 2)))
 then the output becomes
 >the number 1
@@ -41,6 +45,8 @@ then the output becomes
 There is no information about why the example fails. This can be fixed by using Expectations. An expectation can be made using (among others)
 > shouldBe :: (Show a, Eq a) => a -> a -> Expectation
 As the type constraint suggest, this allows hspec to print the expected and actual value upon failure. For example,
+>import Test.Hspec (hspec, it, describe, shouldBe)
+> 
 >hspec (describe "the number 1" (it "is equal to 2" (1 `shouldBe` 2)))
 results in
 >the number 1
