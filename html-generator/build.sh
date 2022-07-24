@@ -14,6 +14,6 @@ fi
 docker container run \
     --rm $INTERACTIVE \
     --volume $(pwd)/dockers/html-generator-builder/scripts:/scripts \
-    --volume $(pwd)/generator/html_generator:/workdir \
+    --volume $(pwd)/html-generator:/workdir \
     --name html-generator-builder-container \
     html-generator-builder $ARGUMENT

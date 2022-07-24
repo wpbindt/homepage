@@ -11,15 +11,15 @@ jobs:
           dockers/html-generator-builder/build_docker_image.sh
       - name: Run html generator tests
         run: |
-          generator/html_generator/build.sh test
+          html-generator/build.sh test
       - name: Compile html-generator
         run: |
-          generator/html_generator/build.sh
+          html-generator/build.sh
       - name: Upload html-generator artifact
         uses: actions/upload-artifact@v2
         with:
           name: html-generator
-          path: generator/html_generator/html-generator
+          path: html-generator/html-generator
 
   generate:
     runs-on: ubuntu-latest
@@ -35,13 +35,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: html-generator
-          path: generator/html_generator
+          path: html-generator
       - name: Make html-generator executable
         run: |
-          chmod +x generator/html_generator/html-generator
+          chmod +x html-generator/html-generator
       - name: Run html-generator and generate index
         run: |
-          python generator/generate.py
+          python scripts/generate_static.py
       - name: Upload generated html files
         uses: actions/upload-artifact@v2
         with:

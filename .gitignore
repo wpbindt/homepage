@@ -2,4 +2,4 @@
 *.nocommit
 static/
 dist-newstyle/
-generator/html_generator/html-generator
+html-generator/html-generator

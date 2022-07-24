@@ -34,7 +34,7 @@ class StaticFile:
 
 def write_markup_file(input_file: Path, output_file: Path) -> None:
     subprocess.call([
-        'generator/html_generator/html-generator', 
+        'html-generator/html-generator', 
         input_file,
         output_file
     ])
