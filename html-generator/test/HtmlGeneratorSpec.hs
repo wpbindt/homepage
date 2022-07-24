@@ -26,7 +26,8 @@ convertMultipleParagraphSpec = checkBodyConversion
          <> "<p>bla bla bla\n ding\n</p>")
 
 convertHeaderSpec :: Int -> Spec
-convertHeaderSpec w = checkBodyConversion ("Check header of weight " <> wString)
+convertHeaderSpec w = checkBodyConversion 
+        ("Converts " <> (take w $ repeat '*') <> " to header of weight " <> wString)
         markup body
             where wString = show w
                   markup = (take w $ repeat '*') <> "bla"
