@@ -1,17 +1,20 @@
 module HtmlGeneratorSpec (spec) where
 
-import Test.Hspec
-import HtmlGenerator
+import Test.Hspec (it, describe, shouldBe, Spec)
+import Test.Hspec.QuickCheck (prop)
+
+import HtmlGenerator (convert)
 
 checkBodyConversion :: String -> String -> String -> Spec
 checkBodyConversion message markup body = it message $ 
         (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
-newlineConvertSpec :: Int -> Spec
-newlineConvertSpec n = checkBodyConversion
-        ("Converts " <> (show n) <> " newlines to an empty document")
-        (take n $ repeat '\n') ""
+newlineConvertSpec :: Spec
+newlineConvertSpec = prop
+        "Converts non-negative number of newlines to an empty document" $
+        \n -> convert "Some title" (take n $ repeat '\n')
+                `shouldBe` "<html><head><title>Some title</title></head><body></body></html>"
 
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
@@ -62,11 +65,7 @@ spec = describe "HtmlGenerator.convert" $ do
         convertHeaderSpec 1
         convertHeaderSpec 2
         convertHeaderSpec 3
-        newlineConvertSpec 0
-        newlineConvertSpec 1
-        newlineConvertSpec 2
-        newlineConvertSpec 3
-        newlineConvertSpec 4
+        newlineConvertSpec
         convertParagraphSpec
         escapeCharacterSpec "filler >" "filler &gt;"
         escapeCharacterSpec "<" "&lt;"
