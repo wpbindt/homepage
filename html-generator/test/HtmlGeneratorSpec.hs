@@ -5,22 +5,27 @@ import Test.Hspec.QuickCheck (prop)
 
 import HtmlGenerator (convert)
 
+
 bodyExpectation :: String -> String -> Expectation
 bodyExpectation markup body = (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
+
 checkBodyConversion :: String -> String -> String -> Spec
 checkBodyConversion message markup body = it message $ bodyExpectation markup body
+
 
 newlineConvertSpec :: Spec
 newlineConvertSpec = prop
         "Converts non-negative number of newlines to an empty document" $
         \n -> bodyExpectation (take n $ repeat '\n') ""
 
+
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
         "Converts a paragraph to a paragraph"
         "bla" "<p>bla\n</p>"
+
 
 convertMultipleParagraphSpec :: Spec
 convertMultipleParagraphSpec = checkBodyConversion
@@ -29,16 +34,19 @@ convertMultipleParagraphSpec = checkBodyConversion
         (   "<p>bla di\nbla bla\n</p>"
          <> "<p>bla bla bla\n ding\n</p>")
 
+
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
                 ((take w $ repeat '*') <> "My header")
                 (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header\n</p>")
 
+
 escapeCharacterSpec :: String -> String -> Spec
 escapeCharacterSpec input output = checkBodyConversion 
         ("Converts " <> input <> " to " <> output)
         input ("<p>" <> output <> "\n</p>")
+
 
 convertCodeSpec :: Spec
 convertCodeSpec = checkBodyConversion
@@ -47,6 +55,7 @@ convertCodeSpec = checkBodyConversion
         ("<pre>def f():\n"
         <> "    print(&#39;hi world&#39;)\n"
         <> "</pre>")
+
 
 orderedListSpec :: Spec
 orderedListSpec = checkBodyConversion
