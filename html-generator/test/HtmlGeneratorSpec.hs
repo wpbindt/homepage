@@ -41,7 +41,7 @@ escapeCharacterSpec input output = checkBodyConversion
 
 convertCodeSpec :: Spec
 convertCodeSpec = checkBodyConversion
-        "It convert > at the start of the line to <pre>"
+        "Converts > at the start of the line to <pre>"
         ">def f():\n>    print('hi world')"
         ("<pre>def f():\n"
         <> "    print(&#39;hi world&#39;)\n"
@@ -49,7 +49,7 @@ convertCodeSpec = checkBodyConversion
 
 orderedListSpec :: Spec
 orderedListSpec = checkBodyConversion
-        "It converts - at the start of the line to ordered list items"
+        "Converts - at the start of the line to ordered list items"
         "-item one\n-item two\n-item three"
         (  "<ol><li><p>item one</p></li>"
         <> "<li><p>item two</p></li>"
@@ -57,7 +57,7 @@ orderedListSpec = checkBodyConversion
 
 
 spec :: Spec
-spec = do
+spec = describe "HtmlGenerator.convert" $ do
         convertHeaderSpec 1
         convertHeaderSpec 2
         convertHeaderSpec 3
