@@ -29,14 +29,14 @@ Now, when we deliberately write a failing test, for example
 >hspec (describe "the number 1" (it "is equal to 2" (1 == 2)))
 then the output becomes
 >the number 1
->  is equal to itself [✘]
+>  is equal to 2 [✘]
 >
 >Failures:
 >
 >  <interactive>:4:33: 
->  1) the number 1 is equal to itself
+>  1) the number 1 is equal to 2
 >
->  To rerun use: --match "/the number 1/is equal to itself/"
+>  To rerun use: --match "/the number 1/is equal to 2/"
 >
 >Randomized with seed 1528042340
 >
@@ -50,16 +50,16 @@ As the type constraint suggest, this allows hspec to print the expected and actu
 >hspec (describe "the number 1" (it "is equal to 2" (1 `shouldBe` 2)))
 results in
 >the number 1
->  is equal to itself [✘]
+>  is equal to 2 [✘]
 >
 >Failures:
 >
 >  <interactive>:8:60: 
->  1) the number 1 is equal to itself
+>  1) the number 1 is equal to 2
 >       expected: 2
 >        but got: 1
 >
->  To rerun use: --match "/the number 1/is equal to itself/"
+>  To rerun use: --match "/the number 1/is equal to 2/"
 >
 >Randomized with seed 200382252
 >
