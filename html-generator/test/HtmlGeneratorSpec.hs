@@ -1,20 +1,21 @@
 module HtmlGeneratorSpec (spec) where
 
-import Test.Hspec (it, describe, shouldBe, Spec)
+import Test.Hspec (it, describe, shouldBe, Spec, Expectation)
 import Test.Hspec.QuickCheck (prop)
 
 import HtmlGenerator (convert)
 
-checkBodyConversion :: String -> String -> String -> Spec
-checkBodyConversion message markup body = it message $ 
-        (convert "Some title" markup) `shouldBe`
+bodyExpectation :: String -> String -> Expectation
+bodyExpectation markup body = (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
+
+checkBodyConversion :: String -> String -> String -> Spec
+checkBodyConversion message markup body = it message $ bodyExpectation markup body
 
 newlineConvertSpec :: Spec
 newlineConvertSpec = prop
         "Converts non-negative number of newlines to an empty document" $
-        \n -> convert "Some title" (take n $ repeat '\n')
-                `shouldBe` "<html><head><title>Some title</title></head><body></body></html>"
+        \n -> bodyExpectation (take n $ repeat '\n') ""
 
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
@@ -28,15 +29,11 @@ convertMultipleParagraphSpec = checkBodyConversion
         (   "<p>bla di\nbla bla\n</p>"
          <> "<p>bla bla bla\n ding\n</p>")
 
-convertHeaderSpec :: Int -> Spec
-convertHeaderSpec w = checkBodyConversion 
-        ("Converts " <> (take w $ repeat '*') <> " to header of weight " <> wString)
-        markup body
-            where wString = show w
-                  markup = (take w $ repeat '*') <> "bla"
-                  openTag = "<h" <> wString <> ">"
-                  closeTag = "</h" <> wString <> ">"
-                  body = openTag <> "bla" <> closeTag
+convertHeaderSpec :: Spec
+convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
+        \w -> bodyExpectation
+                ((take w $ repeat '*') <> "My header")
+                (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header\n</p>")
 
 escapeCharacterSpec :: String -> String -> Spec
 escapeCharacterSpec input output = checkBodyConversion 
@@ -62,9 +59,7 @@ orderedListSpec = checkBodyConversion
 
 spec :: Spec
 spec = describe "HtmlGenerator.convert" $ do
-        convertHeaderSpec 1
-        convertHeaderSpec 2
-        convertHeaderSpec 3
+        convertHeaderSpec
         newlineConvertSpec
         convertParagraphSpec
         escapeCharacterSpec "filler >" "filler &gt;"
