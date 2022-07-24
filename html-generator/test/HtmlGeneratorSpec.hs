@@ -5,7 +5,7 @@ import HtmlGenerator
 
 checkBodyConversion :: String -> String -> String -> Spec
 checkBodyConversion message markup body = it message $ 
-        (convert "Some title" markup) == 
+        (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
 newlineConvertSpec :: Int -> Spec
