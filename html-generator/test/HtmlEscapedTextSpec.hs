@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module HtmlEscapedTextSpec (spec) where
 
 import qualified Data.Text as T

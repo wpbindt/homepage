@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module HtmlGenerator.HtmlEscapedText
     ( escape
     , printEscaped

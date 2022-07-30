@@ -1,4 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
 module HtmlGenerator (main, convert) where
     
 import qualified Data.Text as T
