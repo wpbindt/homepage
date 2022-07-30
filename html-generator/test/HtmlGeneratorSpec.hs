@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HtmlGeneratorSpec (spec) where
 
 import Test.Hspec (it, describe, shouldBe, Spec, Expectation)

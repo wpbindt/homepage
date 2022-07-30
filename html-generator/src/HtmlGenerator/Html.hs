@@ -1,95 +1,87 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HtmlGenerator.Html
     ( Html
     , Title
-    , Structure
     , html_
     , code_
     , ul_
     , ol_
     , p_
-    , h1_
+    , plain_
     , h_
-    , append_
     , render
+    , makeBasicHtml
     ) where
 
-newtype Html = Html String deriving (Eq, Show)
+import qualified Data.Text as T
 
-newtype Structure = Structure String deriving (Show, Eq)
-
-
-instance Semigroup Structure where
-    (<>) = append_
+import HtmlGenerator.HtmlEscapedText (HTMLEscapedText, escape, printEscaped)
 
 
-instance Monoid Structure where
-    mempty = Structure ""
+type Title = T.Text
+data Tag = Tag T.Text deriving (Eq, Show)
+data Html = Html Tag [Html] | PlainText HTMLEscapedText deriving (Eq, Show)
 
 
-type Title = String
+render :: Html -> T.Text
+render (PlainText escapedText) = printEscaped escapedText
+render (Html (Tag tag) htmls) = "<" <> tag <> ">" <> (T.concat . map render $ htmls) <> "</" <> tag <> ">"
 
 
-el :: String -> String -> String
-el tag content = "<" <> tag <> ">" <> content <> "</" <> tag <> ">"
+plain_ :: T.Text -> Html
+plain_ = PlainText . escape
 
 
-html_ :: Title -> Structure -> Html
-html_ title (Structure body) = Html 
-    (el "html"
-        ((el "head" . el "title" $ (escape title))
-        <> (el "body" body)
-        )
-    )
+el :: T.Text -> [Html] -> Html
+el tag = Html (Tag tag) 
 
 
-makeListItem :: Structure -> String
-makeListItem (Structure s) = el "li" s
+simpleTag :: T.Text -> T.Text -> Html
+simpleTag tag = el tag . pure . PlainText . escape
 
 
-ul_ :: [Structure] -> Structure
-ul_ structures = Structure 
-    ( el "ul" 
-        ( concatMap makeListItem structures
-        )
-    )
+h_ :: Int -> T.Text -> Html
+h_ weight = simpleTag . T.pack $ "h" <> (show weight)
 
 
-ol_ :: [Structure] -> Structure
-ol_ structures = Structure 
-    ( el "ol" 
-        ( concatMap makeListItem structures
-        )
-    )
-
-code_ :: String -> Structure
-code_ = Structure . el "pre" . escape
+code_ :: T.Text -> Html
+code_ = simpleTag "pre"
 
 
-p_ :: String -> Structure
-p_ = Structure . el "p" . escape
-
-h1_ :: String -> Structure
-h1_ = Structure . el "h1" . escape
-
-h_ :: Int -> String -> Structure
-h_ w c = Structure . el ('h':show w) . escape $ c
+title_ :: Title -> Html
+title_ = simpleTag "title"
 
 
-append_ :: Structure -> Structure -> Structure
-append_ (Structure s1) (Structure s2) = Structure $ s1 <> s2
+html_ :: [Html] -> Html
+html_ = el "html"
 
-render :: Html -> String
-render (Html s) = s
 
-escapeChar :: Char -> String
-escapeChar c = 
-    case c of
-        '<' -> "&lt;"
-        '>' -> "&gt;"
-        '&' -> "&amp;"
-        '"' -> "&quot;"
-        '\'' -> "&#39;"
-        _ -> [c]
+p_ :: [Html] -> Html
+p_ = el "p"
 
-escape :: String -> String
-escape = concat . map escapeChar
+
+body_ :: [Html] -> Html
+body_ = el "body"
+
+
+head_ :: [Html] -> Html
+head_ = el "head"
+
+
+makeListItem :: Html -> Html
+makeListItem = Html (Tag "li") . pure
+
+
+ul_ :: [Html] -> Html
+ul_ = el "ul" . map makeListItem
+
+
+ol_ :: [Html] -> Html
+ol_ = el "ol" . map makeListItem
+
+
+makeBasicHtml :: Title -> [Html] -> Html
+makeBasicHtml title tags = html_ $
+        [ head_ [title_ title]
+        , body_ tags
+        ]

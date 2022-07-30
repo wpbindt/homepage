@@ -1,5 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
 module HtmlGenerator (main, convert) where
     
+import qualified Data.Text as T
 import System.Directory (doesFileExist)
 import System.Environment (getArgs)
 import System.FilePath (takeBaseName)
@@ -10,7 +12,7 @@ import qualified HtmlGenerator.Markup as Markup
 
 
 convert :: Html.Title -> String -> String
-convert title = Html.render . Convert.convert title . Markup.parse
+convert title = T.unpack . Html.render . Convert.convert title . Markup.parse
 
 
 askPermission :: String -> IO Bool
@@ -39,6 +41,6 @@ main = do
         [] -> 
             readConvertWrite "dummy" getContents putStr
         [inputFile, outputFile] -> 
-            readConvertWrite (takeBaseName inputFile) (readFile inputFile) (safeWrite outputFile)
+            readConvertWrite (T.pack . takeBaseName $ inputFile) (readFile inputFile) (safeWrite outputFile)
         _ -> 
             putStrLn "Wrong usage"

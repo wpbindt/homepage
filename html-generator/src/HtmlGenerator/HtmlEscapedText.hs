@@ -11,7 +11,7 @@ import qualified Data.Text as T
 import Data.Attoparsec.Text
 
 
-data HTMLEscapedText = HTMLEscapedText { printEscaped :: T.Text } deriving Show
+data HTMLEscapedText = HTMLEscapedText { printEscaped :: T.Text } deriving (Show, Eq)
 
 
 escapeHTMLChar :: Parser T.Text

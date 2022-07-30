@@ -1,22 +1,20 @@
 module HtmlGenerator.Convert where
 
+import qualified Data.Text as T
+
 import qualified HtmlGenerator.Markup as Markup
 import qualified HtmlGenerator.Html as Html
 
-convertStructure :: Markup.Structure -> Html.Structure
+convertStructure :: Markup.Structure -> Html.Html
 convertStructure structure = case structure of
-    Markup.Heading w c -> Html.h_ w c
-    Markup.Paragraph c -> Html.p_ c
-    Markup.OrderedList list -> Html.ol_ . map Html.p_ $ list
-    Markup.CodeBlock c -> Html.code_ c
+    Markup.Heading w c -> Html.h_ w (T.pack c)
+    Markup.Paragraph c -> Html.p_ . pure . Html.plain_ . T.pack $ c
+    Markup.OrderedList list -> Html.ol_ . map (Html.p_ . pure . Html.plain_ . T.pack) $ list
+    Markup.CodeBlock c -> Html.code_ (T.pack c)
 
 
-convertDocument :: Markup.Document -> Html.Structure
-convertDocument = foldMap convertStructure
+convertDocument :: Markup.Document -> [Html.Html]
+convertDocument = map convertStructure
 
 convert :: Html.Title -> Markup.Document -> Html.Html
-convert title = Html.html_ title . convertDocument
-
-
-main :: IO ()
-main = putStrLn . show . convert "buh" . Markup.parse $ "*Main title\nfirst\nparagraph\n\n next paragraph\n   \nthird\n**Hi\n>Code\n>Line"
+convert title = Html.makeBasicHtml title . convertDocument
