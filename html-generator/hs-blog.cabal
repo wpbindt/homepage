@@ -21,10 +21,13 @@ library
             HtmlGenerator.Convert
             HtmlGenerator.Html
             HtmlGenerator.Markup
+            HtmlGenerator.HtmlEscapedText
     build-depends:    
         base >=4.16.0.0
         , directory
         , filepath
+        , text
+        , attoparsec
     hs-source-dirs: src
 
 executable html-generator
@@ -45,8 +48,10 @@ test-suite html-generator-test
     build-depends:
         base>=4.16.0.0
         , hspec>=2.7.4
+        , text
         , hs-blog
     build-tool-depends:
         hspec-discover:hspec-discover
     other-modules:
         HtmlGeneratorSpec
+        HtmlEscapedTextSpec
