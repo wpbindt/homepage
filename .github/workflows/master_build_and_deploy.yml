@@ -1,5 +1,7 @@
 on: push
 
+name: Build and deploy website
+
 jobs:
   build-html-generator:
     runs-on: ubuntu-latest

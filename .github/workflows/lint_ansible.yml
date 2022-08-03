@@ -1,4 +1,9 @@
-on: push
+on: 
+  push:
+    paths:
+      - 'ansible/**'
+
+name: Lint ansible
 
 jobs:
   run-ansible-lint:
