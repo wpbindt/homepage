@@ -2,7 +2,7 @@
 - name: Install packages
   package:
     name: "{{ webserver_packages }}"
-    state: latest
+    state: present
 
 - name: Add nginx config
   copy:
