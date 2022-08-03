@@ -1,6 +1,10 @@
 .PHONY: deploy-website
-deploy-website: static
-	ansible-playbook -i ansible/inventory.ini ansible/site.yml
+deploy-website:
+	ansible/deploy.sh
+
+.PHONY: deploy-image
+deploy-image:
+	dockers/ansible/build_docker_image.sh
 
 .PHONY: build-html-generator-builder-image
 build-html-generator-builder-image:

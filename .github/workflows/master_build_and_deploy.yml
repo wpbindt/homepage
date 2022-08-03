@@ -59,7 +59,13 @@ jobs:
       with:
         name: static
         path: static
-    - name: Run Ansible deployment playbook
-      uses: ./dockers/ansible
+    - name: Build deploy image
+      run: |
+        make deploy-image
+      env:
+        VAULT_PASS: ${{ secrets.VAULT_PASS }}
+    - name: Deploy the website
+      run: |
+        make deploy-website
       env:
         VAULT_PASS: ${{ secrets.VAULT_PASS }}

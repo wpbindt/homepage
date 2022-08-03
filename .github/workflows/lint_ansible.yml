@@ -1,0 +1,14 @@
+on: push
+
+jobs:
+  run-ansible-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v1
+      - name: Build deploy image
+        run: |
+          make deploy-image
+      - name: Lint ansible playbooks
+        run: |
+          ansible/deploy.sh lint
