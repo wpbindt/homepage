@@ -35,9 +35,8 @@ bold = Bold . T.pack <$> do
 
 
 codeLine :: Parser T.Text
-codeLine = do
-    string "\n>" <|> string "\r>"
-    takeTill isEndOfLine
+codeLine = (string "\n>" <|> string "\rn")
+           *> takeTill isEndOfLine
 
 
 codeBlock :: Parser LowerLevelMarkup
