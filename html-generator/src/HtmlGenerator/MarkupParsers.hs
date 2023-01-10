@@ -6,16 +6,7 @@ import qualified Data.Text as T
 import Control.Applicative
 import Data.Either
 
-
-data Document = Document [Paragraph] deriving (Show, Eq)
-
-data Paragraph = Paragraph [MarkupToken] deriving (Show, Eq)
-
-data MarkupToken = NormalText T.Text
-                   | Header Int T.Text
-                   | CodeBlock [T.Text]
-                   | OrderedList [T.Text]
-                   deriving (Eq, Show)
+import HtmlGenerator.Markup
 
 
 parseMarkup :: T.Text -> Document

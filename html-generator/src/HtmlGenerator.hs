@@ -8,10 +8,11 @@ import System.FilePath (takeBaseName)
 import qualified HtmlGenerator.Convert as Convert
 import qualified HtmlGenerator.Html as Html
 import qualified HtmlGenerator.Markup as Markup
+import qualified HtmlGenerator.MarkupParsers as Parser
 
 
 convert :: Html.Title -> String -> String
-convert title = T.unpack . Html.render . Convert.convert title . Markup.parse
+convert title input = T.unpack . Html.render . Convert.convertMarkupToHtml title . Parser.parseMarkup . T.pack $ (input ++ "\n")
 
 
 askPermission :: String -> IO Bool

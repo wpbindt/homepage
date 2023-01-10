@@ -24,46 +24,46 @@ newlineConvertSpec = prop
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
         "Converts a paragraph to a paragraph"
-        "bla" "<p>bla</p>"
+        "bla" "<p>bla\n</p>"
 
 
 convertMultipleParagraphSpec :: Spec
 convertMultipleParagraphSpec = checkBodyConversion
         "Converts multiple paragraphs to paragraphs"
         "bla di\nbla bla\n\nbla bla bla\n ding\n"
-        (   "<p>bla di\nbla bla</p>"
-         <> "<p>bla bla bla\n ding</p>")
+        (   "<p>bla di\nbla bla\n</p>"
+         <> "<p>bla bla bla\n ding\n</p>")
 
 
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
                 ((take w $ repeat '*') <> "My header")
-                (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header</p>")
+                (if w > 0 then "<p><h" <> show w <> ">My header</h" <> show w <> "></p>" else "<p>My header\n</p>")
 
 
 escapeCharacterSpec :: String -> String -> Spec
 escapeCharacterSpec input output = checkBodyConversion 
         ("Converts " <> input <> " to " <> output)
-        input ("<p>" <> output <> "</p>")
+        input ("<p>" <> output <> "\n</p>")
 
 
 convertCodeSpec :: Spec
 convertCodeSpec = checkBodyConversion
         "Converts > at the start of the line to <pre>"
         ">def f():\n>    print('hi world')"
-        ("<pre>def f():\n"
+        ("<p><pre>def f():\n"
         <> "    print(&#39;hi world&#39;)\n"
-        <> "</pre>")
+        <> "</pre></p>")
 
 
 orderedListSpec :: Spec
 orderedListSpec = checkBodyConversion
         "Converts - at the start of the line to ordered list items"
         "-item one\n-item two\n-item three"
-        (  "<ol><li><p>item one</p></li>"
+        (  "<p><ol><li><p>item one</p></li>"
         <> "<li><p>item two</p></li>"
-        <> "<li><p>item three</p></li></ol>")
+        <> "<li><p>item three</p></li></ol></p>")
 
 
 spec :: Spec
