@@ -62,7 +62,7 @@ parseLine line = case line of
 
 -- Main parsing algo
 parse :: String -> Document
-parse = parseLines Empty . lines
+parse = acl . New.parseMarkup . T.pack
 
 
 parseLines :: ParsingContext -> [String] -> Document
