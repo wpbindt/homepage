@@ -54,4 +54,8 @@ spec = describe "HtmlEscapedText" $ do
         $ documentExpectation
             "*My header\n"
             [[Header 1 "My header"]]
+    it "Converts multiline normal text"
+        $ documentExpectation
+            "Some text\nSome more\n\n"
+            [[NormalText "Some text", NormalText "Some more"]]
 

@@ -31,7 +31,7 @@ whiteSpace = endOfLine *> endOfLine
 
 
 paragraph :: Parser Paragraph
-paragraph = Paragraph <$> many1 markupToken
+paragraph = Paragraph <$> (markupToken `sepBy1` unImportantWhiteSpace)
 
 
 markupToken :: Parser MarkupToken
@@ -80,4 +80,8 @@ many1TillExclusive p end = (:) <$> p <*> manyTill p (lookAhead end)
 
 specialChar :: Parser ()
 specialChar = endOfLine <* satisfy (inClass "*->")
-              <|> whiteSpace
+              <|> endOfLine
+
+
+unImportantWhiteSpace :: Parser ()
+unImportantWhiteSpace = option () $ endOfLine <* lookAhead (satisfy (notInClass "\n*>-"))
