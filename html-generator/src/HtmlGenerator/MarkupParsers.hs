@@ -62,7 +62,7 @@ header = Header
 
 
 headerMarker :: Parser Int
-headerMarker = option () endOfLine *> countChar '*' <* " "
+headerMarker = option () endOfLine *> countChar '*' <* skipSpace
 
 
 countChar :: Char -> Parser Int

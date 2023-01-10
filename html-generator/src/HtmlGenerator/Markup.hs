@@ -1,5 +1,9 @@
 module HtmlGenerator.Markup where
 
+import qualified Data.Text as T
+import qualified HtmlGenerator.MarkupParsers as New
+
+
 type Document = [Structure]
 
 type Line = String
@@ -85,3 +89,18 @@ maybePrepend Nothing l = l
 
 trim :: String -> String
 trim = unwords . words
+
+
+acl :: New.Document -> Document
+acl (New.Document paragraphs) = concatMap aclParagraph paragraphs
+
+
+aclParagraph :: New.Paragraph -> [Structure]
+aclParagraph (New.Paragraph tokens) = map aclToken tokens
+
+
+aclToken :: New.MarkupToken -> Structure
+aclToken (New.NormalText x) = Paragraph . T.unpack $ x
+aclToken (New.Header w x) = Heading w (T.unpack x)
+aclToken (New.CodeBlock codeLines) = CodeBlock . unlines . map T.unpack $ codeLines
+aclToken (New.OrderedList listItems) = OrderedList . map T.unpack $ listItems
