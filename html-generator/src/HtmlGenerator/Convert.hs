@@ -6,12 +6,6 @@ import qualified HtmlGenerator.Markup as Markup
 import qualified HtmlGenerator.MarkupParsers as NewMarkup
 import qualified HtmlGenerator.Html as Html
 
-convertStructure :: Markup.Structure -> Html.Html
-convertStructure structure = case structure of
-    Markup.Heading w c -> Html.h_ w (T.pack c)
-    Markup.Paragraph c -> Html.p_ . pure . Html.plain_ . T.pack $ c
-    Markup.OrderedList list -> Html.ol_ . map (Html.p_ . pure . Html.plain_ . T.pack) $ list
-    Markup.CodeBlock c -> Html.code_ (T.pack c)
 
 
 convertMarkupDocument :: NewMarkup.Document -> [Html.Html]
@@ -33,9 +27,6 @@ convertToken token = case token of
 convertMarkupToHtml :: Html.Title -> NewMarkup.Document -> Html.Html
 convertMarkupToHtml title = Html.makeBasicHtml title . convertMarkupDocument
 
-
-convertDocument :: Markup.Document -> [Html.Html]
-convertDocument = map convertStructure
 
 convert :: Html.Title -> NewMarkup.Document -> Html.Html
 convert title = Html.makeBasicHtml title . convertMarkupDocument
