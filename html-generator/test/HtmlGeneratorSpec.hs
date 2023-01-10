@@ -24,28 +24,28 @@ newlineConvertSpec = prop
 convertParagraphSpec :: Spec
 convertParagraphSpec = checkBodyConversion 
         "Converts a paragraph to a paragraph"
-        "bla" "<p>bla\n</p>"
+        "bla" "<p>bla</p>"
 
 
 convertMultipleParagraphSpec :: Spec
 convertMultipleParagraphSpec = checkBodyConversion
         "Converts multiple paragraphs to paragraphs"
         "bla di\nbla bla\n\nbla bla bla\n ding\n"
-        (   "<p>bla di\nbla bla\n</p>"
-         <> "<p>bla bla bla\n ding\n</p>")
+        (   "<p>bla di\nbla bla</p>"
+         <> "<p>bla bla bla\n ding</p>")
 
 
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
                 ((take w $ repeat '*') <> "My header")
-                (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header\n</p>")
+                (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header</p>")
 
 
 escapeCharacterSpec :: String -> String -> Spec
 escapeCharacterSpec input output = checkBodyConversion 
         ("Converts " <> input <> " to " <> output)
-        input ("<p>" <> output <> "\n</p>")
+        input ("<p>" <> output <> "</p>")
 
 
 convertCodeSpec :: Spec

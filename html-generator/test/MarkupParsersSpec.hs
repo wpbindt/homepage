@@ -58,4 +58,7 @@ spec = describe "HtmlEscapedText" $ do
         $ documentExpectation
             "Some text\nSome more\n\n"
             [[NormalText "Some text", NormalText "Some more"]]
-
+    it "Converts more complicated multiline normal text"
+        $ documentExpectation
+            "bla di\nbla bla\n\nbla bla bla\n ding\n"
+            [[NormalText "bla di", NormalText "bla bla"], [NormalText "bla bla bla", NormalText " ding"]]
