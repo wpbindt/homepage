@@ -5,6 +5,7 @@ import qualified Data.Text as T
 import Test.Hspec (it, describe, shouldBe, Spec, Expectation)
 
 import HtmlGenerator.MarkupParsers
+import HtmlGenerator.Markup
 
 
 documentExpectation :: T.Text -> [[MarkupToken]] -> Expectation

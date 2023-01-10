@@ -2,8 +2,12 @@ module HtmlGenerator.Convert where
 
 import qualified Data.Text as T
 
-import qualified HtmlGenerator.MarkupParsers as Markup
+import qualified HtmlGenerator.Markup as Markup
 import qualified HtmlGenerator.Html as Html
+
+
+convertMarkupToHtml :: Html.Title -> Markup.Document -> Html.Html
+convertMarkupToHtml title = Html.makeBasicHtml title . convertMarkupDocument
 
 
 convertMarkupDocument :: Markup.Document -> [Html.Html]
@@ -20,11 +24,3 @@ convertToken token = case token of
     (Markup.OrderedList cs) -> Html.ol_ . map (Html.p_ . pure . Html.plain_) $ cs
     (Markup.CodeBlock cs) -> Html.code_ . T.unlines $ cs
     (Markup.NormalText c) -> Html.plain_ (c `T.snoc` '\n')
-
-
-convertMarkupToHtml :: Html.Title -> Markup.Document -> Html.Html
-convertMarkupToHtml title = Html.makeBasicHtml title . convertMarkupDocument
-
-
-convert :: Html.Title -> Markup.Document -> Html.Html
-convert title = Html.makeBasicHtml title . convertMarkupDocument

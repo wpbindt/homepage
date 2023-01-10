@@ -57,3 +57,4 @@ test-suite html-generator-test
     other-modules:
         HtmlGeneratorSpec
         HtmlEscapedTextSpec
+        MarkupParsersSpec

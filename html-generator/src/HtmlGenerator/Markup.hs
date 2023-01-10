@@ -1,8 +1,14 @@
 module HtmlGenerator.Markup where
 
 import qualified Data.Text as T
-import qualified HtmlGenerator.MarkupParsers as New
 
 
-parse :: String -> New.Document
-parse input = New.parseMarkup . T.pack $ input ++ "\n"
+data Document = Document [Paragraph] deriving (Show, Eq)
+
+data Paragraph = Paragraph [MarkupToken] deriving (Show, Eq)
+
+data MarkupToken = NormalText T.Text
+                   | Header Int T.Text
+                   | CodeBlock [T.Text]
+                   | OrderedList [T.Text]
+                   deriving (Eq, Show)
