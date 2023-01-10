@@ -1,54 +1,83 @@
+module HtmlGenerator.MarkupParsers where
+
 import Data.Attoparsec.Text
+import Data.Attoparsec.Combinator
 import qualified Data.Text as T
 import Control.Applicative
+import Data.Either
 
 
-data MarkupDocument = Markup [LowerLevelMarkup] deriving Show
-data LowerLevelMarkup = Header Int T.Text 
-                        | PlainText T.Text 
-                        | Bold T.Text
-                        | Code [T.Text]
-                        | List [T.Text]
-                            deriving Show
+data Document = Document [Paragraph] deriving (Show, Eq)
+
+data Paragraph = Paragraph [MarkupToken] deriving (Show, Eq)
+
+data MarkupToken = NormalText T.Text
+                   | Header Int T.Text
+                   | CodeBlock [T.Text]
+                   | OrderedList [T.Text]
+                   deriving (Eq, Show)
 
 
-block :: Parser T.Text
-block = T.pack <$> manyTill anyChar (string "\n\n")
+parseMarkup :: T.Text -> Document
+parseMarkup input = fromRight (Document []) (parseOnly document input)
 
 
-blocks :: Parser [T.Text]
-blocks = many block
+document :: Parser Document
+document = Document <$> (paragraph `sepBy` whiteSpace)
+
+
+whiteSpace :: Parser ()
+whiteSpace = endOfLine *> endOfLine
+
+
+paragraph :: Parser Paragraph
+paragraph = Paragraph <$> many1 markupToken
+
+
+markupToken :: Parser MarkupToken
+markupToken = orderedList 
+              <|> codeBlock 
+              <|> header 
+              <|> normalText
+
+
+codeBlock :: Parser MarkupToken
+codeBlock = CodeBlock <$> many1 (lineStartingWith '>')
+
+
+orderedList :: Parser MarkupToken
+orderedList = OrderedList <$> many1 (lineStartingWith '-')
+
+
+lineStartingWith :: Char -> Parser T.Text
+lineStartingWith c = T.pack
+                     <$> ((option () endOfLine) *> char c 
+                     *> manyTill anyChar endOfLine)
+
+
+header :: Parser MarkupToken
+header = Header 
+         <$> headerMarker 
+         <*> (T.pack <$> manyTill anyChar endOfLine)
+
+
+headerMarker :: Parser Int
+headerMarker = option () endOfLine *> countChar '*' <* " "
 
 
 countChar :: Char -> Parser Int
 countChar c = length <$> many1 (char c)
 
 
-header :: Parser LowerLevelMarkup
-header = Header <$> (countChar '*') <*> (takeTill isEndOfLine)
+normalText :: Parser MarkupToken
+normalText = NormalText . T.pack 
+             <$> many1TillExclusive (satisfy (not . isEndOfLine)) specialChar
 
 
-bold :: Parser LowerLevelMarkup
-bold = Bold . T.pack <$> do
-    char '`'
-    manyTill anyChar (char '`')
+many1TillExclusive :: Parser a -> Parser b -> Parser [a]
+many1TillExclusive p end = (:) <$> p <*> manyTill p (lookAhead end)
 
 
-codeLine :: Parser T.Text
-codeLine = (string "\n>" <|> string "\rn")
-           *> takeTill isEndOfLine
-
-
-codeBlock :: Parser LowerLevelMarkup
-codeBlock = Code <$> (many1 codeLine)
-
-
-listItem :: Parser T.Text
-listItem = do
-    string "\n-" <|> string "\r-"
-    takeTill isEndOfLine
-
-
-orderedList :: Parser LowerLevelMarkup
-orderedList = List <$> (many1 listItem)
-
+specialChar :: Parser ()
+specialChar = endOfLine <* satisfy (inClass "*->")
+              <|> whiteSpace
