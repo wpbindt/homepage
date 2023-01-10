@@ -16,8 +16,8 @@ data Structure =
 
 
 -- Main parsing algo
-parse :: String -> Document
-parse input = acl . New.parseMarkup . T.pack $ input ++ "\n"
+parse :: String -> New.Document
+parse input = New.parseMarkup . T.pack $ input ++ "\n"
 
 
 acl :: New.Document -> Document

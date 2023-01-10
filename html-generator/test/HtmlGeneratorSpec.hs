@@ -39,7 +39,7 @@ convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
                 ((take w $ repeat '*') <> "My header")
-                (if w > 0 then "<h" <> show w <> ">My header</h" <> show w <> ">" else "<p>My header</p>")
+                (if w > 0 then "<p><h" <> show w <> ">My header</h" <> show w <> "></p>" else "<p>My header</p>")
 
 
 escapeCharacterSpec :: String -> String -> Spec
@@ -52,18 +52,18 @@ convertCodeSpec :: Spec
 convertCodeSpec = checkBodyConversion
         "Converts > at the start of the line to <pre>"
         ">def f():\n>    print('hi world')"
-        ("<pre>def f():\n"
+        ("<p><pre>def f():\n"
         <> "    print(&#39;hi world&#39;)\n"
-        <> "</pre>")
+        <> "</pre></p>")
 
 
 orderedListSpec :: Spec
 orderedListSpec = checkBodyConversion
         "Converts - at the start of the line to ordered list items"
         "-item one\n-item two\n-item three"
-        (  "<ol><li><p>item one</p></li>"
+        (  "<p><ol><li><p>item one</p></li>"
         <> "<li><p>item two</p></li>"
-        <> "<li><p>item three</p></li></ol>")
+        <> "<li><p>item three</p></li></ol></p>")
 
 
 spec :: Spec
