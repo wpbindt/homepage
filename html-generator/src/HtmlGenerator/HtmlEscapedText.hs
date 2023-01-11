@@ -18,12 +18,12 @@ c `to` s = s <$ char c
 
 
 escapeHTMLChar :: Parser T.Text
-escapeHTMLChar = ('<' `to` "&lt;")
-                 <|> ('>' `to` "&gt;")
-                 <|> ('\"' `to` "&quot;")
-                 <|> ('&' `to` "&amp;")
-                 <|> ('\'' `to` "&#39;")
-                 <|> (T.singleton <$> satisfy (notInClass "<>\"&\'"))
+escapeHTMLChar = '<' `to` "&lt;"
+                 <|> '>' `to` "&gt;"
+                 <|> '\"' `to` "&quot;"
+                 <|> '&' `to` "&amp;"
+                 <|> '\'' `to` "&#39;"
+                 <|> T.singleton <$> satisfy (notInClass "<>\"&\'")
 
 
 escapeHTML :: Parser T.Text
