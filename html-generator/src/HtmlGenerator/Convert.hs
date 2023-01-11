@@ -22,5 +22,6 @@ convertToken :: Markup.MarkupToken -> Html.Html
 convertToken token = case token of
     (Markup.Header w c) -> Html.h_ w c
     (Markup.OrderedList cs) -> Html.ol_ . map (Html.p_ . pure . Html.plain_) $ cs
-    (Markup.CodeBlock cs) -> Html.code_ . T.unlines $ cs
+    (Markup.CodeBlock cs) -> Html.pre_ . pure .  Html.code_ . T.unlines $ cs
     (Markup.NormalText c) -> Html.plain_ (c `T.snoc` '\n')
+    (Markup.InLineCode c) -> Html.code_ c

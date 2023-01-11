@@ -63,3 +63,11 @@ spec = describe "HtmlEscapedText" $ do
         $ documentExpectation
             "bla di\nbla bla\n\nbla bla bla\n ding\n"
             [[NormalText "bla di", NormalText "bla bla"], [NormalText "bla bla bla", NormalText " ding"]]
+    it "Converts in line code"
+        $ documentExpectation
+            "`hi there`\n"
+            [[InLineCode "hi there"]]
+    it "Converts in line code and normal text"
+        $ documentExpectation
+            "bla `hi there` di\n"
+            [[NormalText "bla ", InLineCode "hi there", NormalText " di"]]

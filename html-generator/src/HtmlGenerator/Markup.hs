@@ -11,4 +11,5 @@ data MarkupToken = NormalText T.Text
                    | Header Int T.Text
                    | CodeBlock [T.Text]
                    | OrderedList [T.Text]
+                   | InLineCode T.Text
                    deriving (Eq, Show)

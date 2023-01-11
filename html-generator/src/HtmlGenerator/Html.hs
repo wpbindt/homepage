@@ -3,6 +3,7 @@ module HtmlGenerator.Html
     , Title
     , html_
     , code_
+    , pre_
     , ul_
     , ol_
     , p_
@@ -44,7 +45,11 @@ h_ weight = simpleTag . T.pack $ "h" <> (show weight)
 
 
 code_ :: T.Text -> Html
-code_ = simpleTag "pre"
+code_ = simpleTag "code"
+
+
+pre_ :: [Html] -> Html
+pre_ = el "pre"
 
 
 title_ :: Title -> Html

@@ -52,9 +52,9 @@ convertCodeSpec :: Spec
 convertCodeSpec = checkBodyConversion
         "Converts > at the start of the line to <pre>"
         ">def f():\n>    print('hi world')"
-        ("<p><pre>def f():\n"
+        ("<p><pre><code>def f():\n"
         <> "    print(&#39;hi world&#39;)\n"
-        <> "</pre></p>")
+        <> "</code></pre></p>")
 
 
 orderedListSpec :: Spec
@@ -64,6 +64,13 @@ orderedListSpec = checkBodyConversion
         (  "<p><ol><li><p>item one</p></li>"
         <> "<li><p>item two</p></li>"
         <> "<li><p>item three</p></li></ol></p>")
+
+
+convertInLineCode :: Spec
+convertInLineCode = checkBodyConversion
+        "Converts in line code to code"
+        "bla di `code here` bla\n"
+        "<p>bla di \n<code>code here</code> bla\n</p>"
 
 
 spec :: Spec
@@ -79,3 +86,4 @@ spec = describe "HtmlGenerator.convert" $ do
         convertCodeSpec
         convertMultipleParagraphSpec
         orderedListSpec
+        convertInLineCode
