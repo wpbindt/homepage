@@ -13,17 +13,21 @@ import Data.Attoparsec.Text
 data HTMLEscapedText = HTMLEscapedText { printEscaped :: T.Text } deriving (Show, Eq)
 
 
+to :: Char -> T.Text -> Parser T.Text
+c `to` s = s <$ char c
+
+
 escapeHTMLChar :: Parser T.Text
-escapeHTMLChar = (const "&lt;" <$> char '<')
-                 <|> (const "&gt;" <$> char '>')
-                 <|> (const "&quot;" <$> char '\"')
-                 <|> (const "&amp;" <$> char '&')
-                 <|> (const "&#39;" <$> char '\'')
+escapeHTMLChar = ('<' `to` "&lt;")
+                 <|> ('>' `to` "&gt;")
+                 <|> ('\"' `to` "&quot;")
+                 <|> ('&' `to` "&amp;")
+                 <|> ('\'' `to` "&#39;")
                  <|> (T.singleton <$> satisfy (notInClass "<>\"&\'"))
 
 
 escapeHTML :: Parser T.Text
-escapeHTML = ((<>) <$> escapeHTMLChar <*> escapeHTML) <|> (pure "") 
+escapeHTML = ((<>) <$> escapeHTMLChar <*> escapeHTML) <|> ""
 
 
 escape :: T.Text -> HTMLEscapedText
