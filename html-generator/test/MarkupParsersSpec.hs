@@ -71,3 +71,7 @@ spec = describe "HtmlEscapedText" $ do
         $ documentExpectation
             "bla `hi there` di\n"
             [[NormalText "bla ", InLineCode "hi there", NormalText " di"]]
+    it "Converts 2 paragraph document with header and normal text"
+        $ documentExpectation
+            "* A header\n\nSome more\n\n"
+            [[Header 1 "A header"], [NormalText "Some more"]]

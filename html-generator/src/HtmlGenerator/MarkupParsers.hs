@@ -50,7 +50,7 @@ lineStartingWith c = T.pack
 header :: Parser MarkupToken
 header = Header 
          <$> headerMarker 
-         <*> (T.pack <$> manyTill anyChar endOfLine)
+         <*> (T.pack <$> many1TillExclusive anyChar endOfLine)
 
 
 headerMarker :: Parser Int
