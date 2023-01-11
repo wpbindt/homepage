@@ -29,6 +29,7 @@ markupToken :: Parser MarkupToken
 markupToken = orderedList 
               <|> codeBlock 
               <|> header 
+              <|> inLineCode
               <|> normalText
 
 
@@ -60,6 +61,10 @@ countChar :: Char -> Parser Int
 countChar c = length <$> many1 (char c)
 
 
+inLineCode :: Parser MarkupToken
+inLineCode = InLineCode . T.pack <$> ("`" *> many1TillExclusive anyChar "`" <* "`")
+
+
 normalText :: Parser MarkupToken
 normalText = NormalText . T.pack 
              <$> many1TillExclusive (satisfy (not . isEndOfLine)) specialChar
@@ -71,6 +76,7 @@ many1TillExclusive p end = (:) <$> p <*> manyTill p (lookAhead end)
 
 specialChar :: Parser ()
 specialChar = endOfLine <* satisfy (inClass "*->")
+              <|> (() <$ char '`')
               <|> endOfLine
 
 
