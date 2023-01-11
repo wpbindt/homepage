@@ -1,4 +1,4 @@
-module HtmlGenerator.Convert where
+module HtmlGenerator.Convert (convertMarkupToHtml) where
 
 import qualified Data.Text as T
 

@@ -1,4 +1,4 @@
-module HtmlGenerator.MarkupParsers where
+module HtmlGenerator.MarkupParsers (parseMarkup) where
 
 import Data.Attoparsec.Text
 import Data.Attoparsec.Combinator
