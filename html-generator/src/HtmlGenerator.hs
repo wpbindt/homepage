@@ -11,8 +11,8 @@ import qualified HtmlGenerator.Markup as Markup
 import qualified HtmlGenerator.MarkupParsers as Parser
 
 
-convert :: Html.Title -> String -> String
-convert title input = T.unpack . Html.render . Convert.convertMarkupToHtml title . Parser.parseMarkup . T.pack $ (input ++ "\n")
+convert :: Html.Title -> T.Text -> T.Text
+convert title input = Html.render . Convert.convertMarkupToHtml title . Parser.parseMarkup $ (input `T.snoc` '\n')
 
 
 askPermission :: String -> IO Bool
@@ -31,7 +31,7 @@ safeWrite path contents = do
 
 
 readConvertWrite :: Html.Title -> IO String -> (String -> IO ()) -> IO ()
-readConvertWrite title read' write = convert title <$> read' >>= write
+readConvertWrite title read' write = T.unpack . convert title <$> (T.pack <$> read') >>= write
 
 
 main :: IO ()

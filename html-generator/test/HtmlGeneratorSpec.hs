@@ -1,24 +1,30 @@
 module HtmlGeneratorSpec (spec) where
 
+import qualified Data.Text as T
+
 import Test.Hspec (it, describe, shouldBe, Spec, Expectation)
 import Test.Hspec.QuickCheck (prop)
 
 import HtmlGenerator (convert)
 
 
-bodyExpectation :: String -> String -> Expectation
+showT :: (Show a) => a -> T.Text
+showT = T.pack . show
+
+
+bodyExpectation :: T.Text -> T.Text -> Expectation
 bodyExpectation markup body = (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
 
-checkBodyConversion :: String -> String -> String -> Spec
+checkBodyConversion :: String -> T.Text -> T.Text -> Spec
 checkBodyConversion message markup body = it message $ bodyExpectation markup body
 
 
 newlineConvertSpec :: Spec
 newlineConvertSpec = prop
         "Converts non-negative number of newlines to an empty document" $
-        \n -> bodyExpectation (take n $ repeat '\n') ""
+        \n -> bodyExpectation (T.pack . take n . repeat $ '\n') ""
 
 
 convertParagraphSpec :: Spec
@@ -38,13 +44,13 @@ convertMultipleParagraphSpec = checkBodyConversion
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
-                ((take w $ repeat '*') <> "My header")
-                (if w > 0 then "<p><h" <> show w <> ">My header</h" <> show w <> "></p>" else "<p>My header\n</p>")
+                ((T.pack . take w . repeat $ '*') <> "My header")
+                (if w > 0 then "<p><h" <> showT w <> ">My header</h" <> showT w <> "></p>" else "<p>My header\n</p>")
 
 
-escapeCharacterSpec :: String -> String -> Spec
+escapeCharacterSpec :: T.Text -> T.Text -> Spec
 escapeCharacterSpec input output = checkBodyConversion 
-        ("Converts " <> input <> " to " <> output)
+        (T.unpack ("Converts " <> input <> " to " <> output))
         input ("<p>" <> output <> "\n</p>")
 
 
