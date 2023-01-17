@@ -25,17 +25,33 @@ Great! Now our dict-based repository is well-tested, and we can be sure our code
 
 Disaster strikes; the customer, once content with filling up simple dictionaries, now wishes to store their strings in a file. We comply, and set out to write another implementation of `Repository`, `FileRepository`. We start by writing some tests.
 
-We could write some tests very similar to the ones for `DictRepository`, replacing the dict-based setups and asserts by file-based ones. But this has some drawbacks. Firstly, it smells like a violation of DRY, since these repositories function in essentially the same way (put some stuff in, get the same stuff back later), save for some minor details (files vs dicts). Secondly, suppose we have some change in the expected behaviour of the interface. For example, say we want it to raise `SomeCustomException` when it cannot find a key. Then we'll have to write separate tests for each of its implementations asserting that they do so, and it's very easy to forget one or two.
+We could write some tests very similar to the ones for `DictRepository`, replacing the dict-based setups and asserts by file-based ones. But this has some drawbacks. Firstly, it smells like a violation of DRY, since these repositories function in essentially the same way (put some stuff in, get the same stuff back later), save for some minor details (files vs dicts). Secondly, suppose we have some change in the expected behaviour of the interface. For example, say we want it to raise `SomeException` when it cannot find a key. Then we'll have to write separate tests for each of its implementations asserting that they do so, and it's very easy to forget one or two.
 
-*** Interface tests
+*** A solution: interface tests
 There must be a better way. Let's say we treat our test code as though it were actual code (which it is), and we take "program to an interface, not an implementation" seriously. That is, we try to program the tests of `DictRepository` and `FileRepository` to the interface `Repository`. Of course this is not entirely possible, we'll still have to do file or dict-specific setup, but let's see how far we get. 
 
 Some consideration leads to the following test:
 > def test_repository(repository: Repository) -> None:
 >   repository.set(4, 'hi')
 >   assert repository.get(4) == 'hi'
+Assuming we have a test framework which can figure out the setup and teardown of the fixtures on its own, this test case is perfect! It can be used for both `FileRepository` and `DictRepository`, and even for future implementations of `Repository`, if ever we write one. Despite being a perfectly adequate testcase for both implementations, it's coupled to the implementation of neither.
 
+For a more concrete benefit, assume a feature request comes in that `Repositories` should raise a `SomeException`, as above. Again we can write a test completely decoupled from any specific implementation:
+> def test_repository(repository: Repository) -> None:
+>   with assert_raises(SomeException):
+>     repository.get(4)
+This test is valid for all implementations, and will fail until we've implemented the feature for all of them, subverting the error-prone implementation hunt (especially with structural as opposed to nominal subtyping) we'd have to do if we were to write tests per implementation.
 
+As another benefit, if ever we'd need to implement something like a `RedisRepository`, then we'll have a test suite ready to be used, at no extra cost!
+
+Now that we're convinced that 
+-low coupling between pieces of code is good, 
+-test code is code as much as the code it tests is, 
+-therefore low coupling between a test and its subject is good, 
+let's consider how to implement this in actual test frameworks, as opposed to the hypothetical annotation-based framework we've been working with so far. We consider `unittest` and `pytest`. Each have their pros and cons.
+
+** Actual implementations
+*** unittest
 Suppose you have some interface `MyInterface`, and two implementations `Implementation1` and `Implementation2`. If these implementations have some shared behavior, then you might want to write an abstract test case like this
 > from abc import ABC, abstractmethod
 > from unittest import TestCase
