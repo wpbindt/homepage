@@ -30,6 +30,12 @@ We could write some tests very similar to the ones for `DictRepository`, replaci
 *** Interface tests
 There must be a better way. Let's say we treat our test code as though it were actual code (which it is), and we take "program to an interface, not an implementation" seriously. That is, we try to program the tests of `DictRepository` and `FileRepository` to the interface `Repository`. Of course this is not entirely possible, we'll still have to do file or dict-specific setup, but let's see how far we get. 
 
+Some consideration leads to the following test:
+> def test_repository(repository: Repository) -> None:
+>   repository.set(4, 'hi')
+>   assert repository.get(4) == 'hi'
+
+
 Suppose you have some interface `MyInterface`, and two implementations `Implementation1` and `Implementation2`. If these implementations have some shared behavior, then you might want to write an abstract test case like this
 > from abc import ABC, abstractmethod
 > from unittest import TestCase
