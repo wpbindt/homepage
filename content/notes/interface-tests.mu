@@ -52,29 +52,35 @@ let's consider how to implement this in actual test frameworks, as opposed to th
 
 ** Actual implementations
 *** unittest
-Suppose you have some interface `MyInterface`, and two implementations `Implementation1` and `Implementation2`. If these implementations have some shared behavior, then you might want to write an abstract test case like this
+In `unittest`, tests are organized in classes. I don't know why this is, because usually the main reason to make something a class is because there's state afoot, but I see no state here (maybe my knowledge of `unittest` is lacking). A more cynical interpretation is that the other main reason to make something a class is because you're forced to, which certainly explains why `JUnit` uses classes to organize tests, and since `unittest` is inspired by `JUnit`, maybe this design non-choice was copied without putting too much thought into it.
+
+As a result, the only way I've found so far to implement tests with low coupling to their subjects is using the template pattern. The result causes more confusion than it's worth, and is added here just as a curiosity. For example, for the `Repository` interface as above,
 > from abc import ABC, abstractmethod
 > from unittest import TestCase
 >
-> class AbstractTestCase(TestCase, ABC):
->     @abstractmethod
->     def _get_tested_object(self) -> MyInterface: 
->         ...
->
->     def test_something(self) -> None:
->         test_obj = self._get_tested_object()
->
->         # make some assertions about the object
->
-> class TestCase1(AbstractTestCase):
->     def _get_tested_object(self) -> MyInterface:
->         return Implementation1()
-With a similar concrete TestCase for the other implementation. However, when you do this, most test runners (nose and unittest at least) will try to instantiate the abstract test class, and fail accordingly. Instead, do this:
-> class AbstractTestCaseHider:
->     class AbstractTestCase(TestCase, ABC):
->         ...
->
-> class TestCase1(AbstractTestCaseHider.AbstractTestCase):
+> class AbstractRepositoryTestCase(TestCase, ABC):
+>   @abstractmethod
+>   def _get_repository(self) -> Repository: 
 >     ...
-Then the test runners will not find the abstract test case, and will just run the concrete ones.
+>
+>   def test_repository(self) -> None:
+>     repository = self._get_repository()
+>     repository.set(4, 'hi')
+>     self.assertEqual('hi', repository.get(4))
+with the test case for `DictRepository` being
+> class DictRepositoryTest(AbstractRepositoryTestCase):
+>   def _get_repository(self) -> Repository:
+>     return DictRepository({})
 
+Actually the implementation as is, is not quite correct. Depending on how you run your tests, and where `AbstractRepositoryTestCase` is located, `unittest` might try to instantiate and run `AbstractRepositoryTestCase`, thinking it's a proper test case. This will cause `unittest` to error out. To remedy this, we can wrap the abstract test case in a class hiding it from `unittest`:
+> class AbstractTestCaseHider:
+>   class AbstractRepositoryTestCase(TestCase, ABC):
+>     ...
+>
+> class DictRepositoryTest(AbstractTestCaseHider.AbstractRepositoryTestCase):
+>   ...
+Alternatively, we could avoid inheriting from `TestCase` in the base case, and have the clients inherit from both `AbstractRepositoryTestCase` and `unittest.TestCase`. But then you're starting down the road of multiple inheritance, which is in general a very bad idea.
+
+The combination of the template pattern and the test case hider business makes this a profoundly confusing solution, not worthy of recommendation.
+
+*** pytest
