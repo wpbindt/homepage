@@ -1,4 +1,4 @@
-** Interface tests, 6-8-2022
+** Interface tests, 6-8-2022, 17-01-2023
 Suppose we have an interface for a repository which stores strings under integer keys:
 > from typing import Protocol
 >
@@ -84,3 +84,39 @@ Alternatively, we could avoid inheriting from `TestCase` in the base case, and h
 The combination of the template pattern and the test case hider business makes this a profoundly confusing solution, not worthy of recommendation.
 
 *** pytest
+In `pytest`, the solution is more elegant, and less confusing (which doesn't say that much).
+> # conftest.py
+>
+> @pytest.fixture
+> def dict_repository():
+>   yield DictRepository({})
+>
+> @pytest.fixture
+> def file_repository():
+>   filepath = pathlib.Path('my_file')
+>   filepath.touch()
+>   yield FileRepository(filepath)
+>   filepath.unlink(missing_ok=True)
+>
+> @pytest.fixture(
+>   params=[
+>     dict_repository.__name__,
+>     file_repository.__name__,
+>   ]
+> )
+> def repository(request):
+>   return request.getfixturevalue(request.param)
+With this `conftest`, we can write tests for `Repository` as follows:
+> def test_repository(repository):
+>   repository.set(4, 'hi')
+>   assert repository.get(4) == 'hi'
+This test will be run for both implementations of `Repository` specified in `conftest`. The main drawback this approach has compared to the `unittest` approach is its lack of type safety. This is because of `pytest`'s preference for implicit over explicit. It injects dependencies by matching based on strings, we lose type safety for everything we inject into a test function. Despite this (quite serious) drawback, I still prefer the `pytest` solution over the `unittest` one. 
+
+Ideally there would be a test framework which handles fixtures similarly to `pytest`, but injects them in an explicit rather than implicit way, similarly to `fastapi` does. I'm imagining something like
+> def repository():
+>   yield from dict_repository()
+>   yield from file_repository()
+> 
+> def test_something(repository: some_test_framework.Dependencies[repository]):
+>   ...
+I'm not sure if that'd actually work out, but it's a digression anyway.
