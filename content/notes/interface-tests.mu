@@ -120,3 +120,10 @@ Ideally there would be a test framework which handles fixtures similarly to `pyt
 > def test_something(repository: some_test_framework.Dependencies[repository]):
 >   ...
 I'm not sure if that'd actually work out, but it's a digression anyway.
+
+
+
+*** TODOS:
+- use case to discuss: an adapter and its fake
+- potential nice way to implement this: `hypothesis`
+- "interface tests" shouldn't exist, as a name. It's just the proper way to write any automated test.
