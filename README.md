@@ -1,0 +1,4 @@
+# Static homepage
+This repo contains the content of my homepage. It is deployed automatically on every push to to `main`, using ansible. The relevant playbooks are found in the `ansible` directory, and the deploy script in `dockers/ansible/scripts`.
+
+The content is located in `content`, and is written in a custom markup language. This is converted to HTML using the `generate_static.py` script in `scripts`. It parses the content as follows. It iterates over the subdirectories (not recursively) of the `content` directory, and convert each of the files in there to HTML using the application in `html-generator`. Each subdirectory gets its own section in the index page, with links pointing to the converted files.
