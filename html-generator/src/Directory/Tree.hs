@@ -52,9 +52,5 @@ getDirectoryContentsStrict :: FilePath -> IO [FilePath]
 getDirectoryContentsStrict path = (filter $ notIn [".", ".."]) <$> getDirectoryContents path
 
 
-prepend :: FilePath -> FilePath -> FilePath
-prepend p1 p2 = p1 ++ "/" ++ p2
-
-
 getAbsoluteDirectoryContentsStrict :: FilePath -> IO [FilePath]
-getAbsoluteDirectoryContentsStrict path = (map $ prepend path) <$> getDirectoryContentsStrict path
+getAbsoluteDirectoryContentsStrict path = (map $ (</>) path) <$> getDirectoryContentsStrict path
