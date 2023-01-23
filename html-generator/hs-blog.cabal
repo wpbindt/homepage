@@ -24,8 +24,9 @@ library
             HtmlGenerator.Markup
             HtmlGenerator.MarkupParsers
             HtmlGenerator.HtmlEscapedText
-        Directory.Tree
         Directory.Directory
+        Directory.Tree
+        Directory.Write
     build-depends:    
         base >=4.16.0.0
         , directory
