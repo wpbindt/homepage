@@ -16,7 +16,9 @@ parseFile path = File path <$> TIO.readFile path
 
 
 parseDirectoryEntries :: (FilePath -> IO Bool) -> (FilePath -> IO a) -> FilePath -> IO [a] 
-parseDirectoryEntries filterer parser path = (getAbsoluteDirectoryContentsStrict path) >>= (filterM filterer) >>= (mapM parser)
+parseDirectoryEntries filterer parser path = getAbsoluteDirectoryContentsStrict path
+                                             >>= filterM filterer
+                                             >>= mapM parser
 
 
 parseFiles :: FilePath -> IO [File]
@@ -40,4 +42,4 @@ prepend p1 p2 = p1 ++ "/" ++ p2
 
 
 getAbsoluteDirectoryContentsStrict :: FilePath -> IO [FilePath]
-getAbsoluteDirectoryContentsStrict path = fmap (map (prepend path)) $ getDirectoryContentsStrict path
+getAbsoluteDirectoryContentsStrict path = fmap (map $ prepend path) $ getDirectoryContentsStrict path

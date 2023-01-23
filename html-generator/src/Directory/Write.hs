@@ -7,14 +7,18 @@ import Directory.Directory
 
 
 write :: Directory -> IO ()
-write (Directory path directories files) = do
+write directory@(Directory path _ _) = do
     alreadyExists <- doesDirectoryExist path
     if alreadyExists then Prelude.putStrLn ("Directory \"" ++ path ++ "\" already exists, skipping")
-    else do
-        createDirectoryIfMissing True path
-        _ <- mapM writeToFile files
-        _ <- mapM write directories
-        return ()
+    else writeDirectory directory
+
+
+writeDirectory :: Directory -> IO ()
+writeDirectory (Directory path directories files) = do
+    createDirectory path
+    _ <- mapM writeToFile files
+    _ <- mapM writeDirectory directories
+    return ()
 
 
 writeToFile :: File -> IO ()
