@@ -21,7 +21,7 @@ sectionTestCase pages = (parseTSite (Directory "content" [Directory "notes" [] (
 
 spec :: Spec
 spec = do
-    describe "Title.parseSite" $ do
+    describe "Site.parseSite" $ do
         it "Converts empty subdirectory to empty section" $ 
                 (parseTSite (Directory "content" [Directory "notes" [] []] [])) 
                 `shouldBe` Site ["content"] [Section ["notes"] []]

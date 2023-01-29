@@ -30,6 +30,7 @@ library
         Markup.MarkupParsers
         Site.Site
         Site.ParseSite
+        Site.RenderSite
         Site.Title
     build-depends:    
         base >=4.16.0.0
@@ -66,4 +67,5 @@ test-suite html-generator-test
         HtmlEscapedTextSpec
         MarkupParsersSpec
         ParseSiteSpec
+        RenderSiteSpec
         TitleSpec
