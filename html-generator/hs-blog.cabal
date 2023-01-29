@@ -23,12 +23,12 @@ library
         HtmlGenerator
             HtmlGenerator.Convert
             HtmlGenerator.Html
-            HtmlGenerator.Markup
-            HtmlGenerator.MarkupParsers
             HtmlGenerator.HtmlEscapedText
         Directory.Directory
         Directory.Tree
         Directory.Write
+        Markup.Markup
+        Markup.MarkupParsers
         Site.Site
         Site.Title
     build-depends:    

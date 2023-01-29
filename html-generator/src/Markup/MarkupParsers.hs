@@ -1,4 +1,4 @@
-module HtmlGenerator.MarkupParsers (parseMarkup) where
+module Markup.MarkupParsers (parseMarkup) where
 
 import Data.Attoparsec.Text
 import Data.Attoparsec.Combinator
@@ -6,7 +6,7 @@ import qualified Data.Text as T
 import Control.Applicative
 import Data.Either
 
-import HtmlGenerator.Markup
+import Markup.Markup
 
 
 parseMarkup :: T.Text -> Document

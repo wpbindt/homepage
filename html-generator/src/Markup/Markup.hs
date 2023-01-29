@@ -1,4 +1,4 @@
-module HtmlGenerator.Markup where
+module Markup.Markup where
 
 import qualified Data.Text as T
 

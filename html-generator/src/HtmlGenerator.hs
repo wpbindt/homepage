@@ -8,8 +8,8 @@ import System.FilePath (takeBaseName)
 
 import qualified HtmlGenerator.Convert as Convert
 import qualified HtmlGenerator.Html as Html
-import qualified HtmlGenerator.Markup as Markup
-import qualified HtmlGenerator.MarkupParsers as Parser
+import qualified Markup.Markup as Markup
+import qualified Markup.MarkupParsers as Parser
 
 
 convert :: Html.Title -> T.Text -> T.Text

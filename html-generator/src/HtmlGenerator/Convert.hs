@@ -2,7 +2,7 @@ module HtmlGenerator.Convert (convertMarkupToHtml) where
 
 import qualified Data.Text as T
 
-import qualified HtmlGenerator.Markup as Markup
+import qualified Markup.Markup as Markup
 import qualified HtmlGenerator.Html as Html
 
 
