@@ -32,6 +32,7 @@ library
         Site.ParseSite
         Site.RenderSite
         Site.Title
+        SiteGenerator
     build-depends:    
         base >=4.16.0.0
         , directory
