@@ -11,7 +11,9 @@ maintainer:         wesselbindt@gmail.com
 
 common common-settings
     default-language: Haskell2010
-    default-extensions: OverloadedStrings
+    default-extensions: 
+        OverloadedStrings
+        DeriveFunctor
     ghc-options:
         -Wall
 
@@ -27,6 +29,8 @@ library
         Directory.Directory
         Directory.Tree
         Directory.Write
+        Site.Site
+        Site.Title
     build-depends:    
         base >=4.16.0.0
         , directory
@@ -61,3 +65,4 @@ test-suite html-generator-test
         HtmlGeneratorSpec
         HtmlEscapedTextSpec
         MarkupParsersSpec
+        TitleSpec
