@@ -18,7 +18,7 @@ clean-html-generator:
 	html-generator/build.sh clean
 
 static: html-generator/html-generator
-	python3 scripts/generate_static.py
+	html-generator/html-generator content
 
 .PHONY: clean-static
 clean-static:
