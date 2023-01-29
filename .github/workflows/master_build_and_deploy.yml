@@ -29,10 +29,6 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v1
-      - name: Set up Python environment
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
       - name: Download html-generator
         uses: actions/download-artifact@v2
         with:
@@ -43,7 +39,7 @@ jobs:
           chmod +x html-generator/html-generator
       - name: Run html-generator and generate index
         run: |
-          python scripts/generate_static.py
+          ./html-generator/html-generator content
       - name: Upload generated html files
         uses: actions/upload-artifact@v2
         with:

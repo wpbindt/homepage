@@ -1,5 +1,7 @@
 module SiteGenerator where
 
+import System.Environment
+
 import HtmlGenerator.Convert
 import Directory.Directory
 import Directory.Tree
@@ -38,4 +40,8 @@ mainAlgo filepath = (convertMarkupDirToHtmlDir <$> tree filepath) >>= write
 
 
 main :: IO ()
-main = getLine >>= mainAlgo
+main = do
+    arguments <- getArgs
+    case arguments of
+        [contentDir] -> mainAlgo contentDir
+        _ -> putStrLn "Wrong usage"
