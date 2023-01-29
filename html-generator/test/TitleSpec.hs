@@ -26,3 +26,9 @@ spec = do
                 (toDirName ["hi"]) `shouldBe` "hi"
         it "Hyphenates multipart titles" $ 
                 (toDirName ["hi", "there"]) `shouldBe` "hi-there"
+
+    describe "Title.fromFileName" $ do
+        it "Converts single part title" $
+                (fromFileName "hi.mu") `shouldBe` ["hi"]
+        it "Converts multi part title" $
+                (fromFileName "hi-mom.mu") `shouldBe` ["hi", "mom"]

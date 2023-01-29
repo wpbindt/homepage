@@ -19,3 +19,7 @@ toHeader (first:remainder) = T.intercalate " " $ (T.toTitle first):remainder
 
 toDirName :: Title -> FilePath
 toDirName title = toFileName title ""
+
+
+fromFileName :: FilePath -> Title
+fromFileName = T.splitOn "-" . T.pack . dropExtension
