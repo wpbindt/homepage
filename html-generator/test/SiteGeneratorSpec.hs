@@ -56,3 +56,8 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "generates correct index and file tree" $ singlePageExpectation "" ""
     it "converts a header to a header" $ singlePageBodyExpectation "* My header\n" "<p><h1>My header</h1></p>"
     it "converts a 2-header to a 2-header" $ singlePageBodyExpectation "** My header\n" "<p><h2>My header</h2></p>"
+    it "converts > at the start of the line to <pre><code>" $ singlePageBodyExpectation
+        ">def f():\n>    print('hi world')\n"
+        (  "<p><pre><code>def f():\n"
+        <> "    print(&#39;hi world&#39;)\n"
+        <> "</code></pre></p>")
