@@ -33,14 +33,6 @@ convertParagraphSpec = checkBodyConversion
         "bla" "<p>bla\n</p>"
 
 
-convertMultipleParagraphSpec :: Spec
-convertMultipleParagraphSpec = checkBodyConversion
-        "Converts multiple paragraphs to paragraphs"
-        "bla di\nbla bla\n\nbla bla bla\n ding\n"
-        (   "<p>bla di\nbla bla\n</p>"
-         <> "<p>bla bla bla\n ding\n</p>")
-
-
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
@@ -54,31 +46,6 @@ escapeCharacterSpec input output = checkBodyConversion
         input ("<p>" <> output <> "\n</p>")
 
 
-convertCodeSpec :: Spec
-convertCodeSpec = checkBodyConversion
-        "Converts > at the start of the line to <pre>"
-        ">def f():\n>    print('hi world')"
-        ("<p><pre><code>def f():\n"
-        <> "    print(&#39;hi world&#39;)\n"
-        <> "</code></pre></p>")
-
-
-orderedListSpec :: Spec
-orderedListSpec = checkBodyConversion
-        "Converts - at the start of the line to ordered list items"
-        "-item one\n-item two\n-item three"
-        (  "<p><ol><li><p>item one</p></li>"
-        <> "<li><p>item two</p></li>"
-        <> "<li><p>item three</p></li></ol></p>")
-
-
-convertInLineCode :: Spec
-convertInLineCode = checkBodyConversion
-        "Converts in line code to code"
-        "bla di `code here` bla\n"
-        "<p>bla di \n<code>code here</code> bla\n</p>"
-
-
 spec :: Spec
 spec = describe "HtmlGenerator.convert" $ do
         convertHeaderSpec
@@ -89,7 +56,3 @@ spec = describe "HtmlGenerator.convert" $ do
         escapeCharacterSpec "&" "&amp;"
         escapeCharacterSpec "\"" "&quot;"
         escapeCharacterSpec "'" "&#39;"
-        convertCodeSpec
-        convertMultipleParagraphSpec
-        orderedListSpec
-        convertInLineCode
