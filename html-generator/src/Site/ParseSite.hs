@@ -12,7 +12,7 @@ type ContentParser a = T.Text -> a
 
 parseSite :: ContentParser a -> Directory -> Site a
 parseSite contentParser (Directory dirName subdirectories _) = Site 
-        [T.pack dirName] 
+        (fromFileName dirName)
         $ map (parseSection contentParser) subdirectories
 
 

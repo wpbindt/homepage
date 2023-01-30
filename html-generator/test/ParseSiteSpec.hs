@@ -25,6 +25,9 @@ spec = do
         it "Converts empty subdirectory to empty section" $ 
                 (parseTSite (Directory "content" [Directory "notes" [] []] [])) 
                 `shouldBe` Site ["content"] [Section ["notes"] []]
+        it "Converts empty subdirectory with multipart title to empty section" $
+                (parseTSite (Directory "my-homepage" [Directory "notes" [] []] []))
+                `shouldBe` Site ["my", "homepage"] [Section ["notes"] []]
         it "Converts empty subdirectories to empty sections" $ 
                 (parseTSite (Directory "content" [Directory "notes" [] [], Directory "other" [] []] [])) 
                 `shouldBe` Site ["content"] [Section ["notes"] [], Section ["other"] []]

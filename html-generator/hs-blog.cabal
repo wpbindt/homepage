@@ -69,4 +69,5 @@ test-suite html-generator-test
         MarkupParsersSpec
         ParseSiteSpec
         RenderSiteSpec
+        SiteGeneratorSpec
         TitleSpec
