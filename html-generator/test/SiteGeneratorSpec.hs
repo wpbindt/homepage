@@ -7,12 +7,15 @@ import SiteGenerator
 import Directory.Directory
 
 
-singlePageExpectation :: T.Text -> T.Text -> Expectation
-singlePageExpectation markup expectedHtml = convertMarkupDirToHtmlDir inputDir `shouldBe` outputDir
-        where inputDir = Directory "my-homepage" [notesInDir] []
-              notesInDir = Directory "notes" [] [File "my-page.mu" markup]
-              outputDir = Directory "static" [notesOutDir] [indexPage]
-              notesOutDir = Directory "notes" [] [File "my-page.html" (htmlHead <> expectedHtml <> htmlTail)]
+singlePageInputDir :: T.Text -> Directory
+singlePageInputDir markup = Directory "my-homepage" [notesDir] []
+        where notesDir = Directory "notes" [] [File "my-page.mu" markup]
+
+
+singlePageOutputDir :: T.Text -> Directory
+singlePageOutputDir expectedHtml = Directory "static" [notesDir] [indexPage]
+        where notesDir = Directory "notes" [] [pageFile]
+              pageFile = File "my-page.html" (htmlHead <> expectedHtml <> htmlTail)
               htmlHead = "<html><head><title>My page</title></head><body>"
               htmlTail = "</body></html>"
               indexPage = File "index.html" indexContent
@@ -31,6 +34,25 @@ singlePageExpectation markup expectedHtml = convertMarkupDirToHtmlDir inputDir `
                     , "</html>"
                 ]
 
+
+singlePageExpectation :: T.Text -> T.Text -> Expectation
+singlePageExpectation markup expectedHtml = convertMarkupDirToHtmlDir inputDir `shouldBe` outputDir
+        where inputDir = singlePageInputDir markup
+              outputDir = singlePageOutputDir expectedHtml
+
+
+singlePageBodyExpectation :: T.Text -> T.Text -> Expectation
+singlePageBodyExpectation markup expectedBody = actualBody `shouldBe` expectedBody
+        where actualDir = convertMarkupDirToHtmlDir . singlePageInputDir $ markup
+              actualNotesDir = head . getDirectories $ actualDir
+              actualHtml = getContent . head . getFiles $ actualNotesDir
+              header = T.length "<html><head><title>My page</title></head><body>"
+              footer = T.length "</body></html>"
+              actualBody = T.dropEnd footer . T.drop header $ actualHtml
+
+
 spec :: Spec
 spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
-    it "converts an empty page to an empty page" $ singlePageExpectation "" ""
+    it "generates correct index and file tree" $ singlePageExpectation "" ""
+    it "converts a header to a header" $ singlePageBodyExpectation "* My header\n" "<p><h1>My header</h1></p>"
+    it "converts a 2-header to a 2-header" $ singlePageBodyExpectation "** My header\n" "<p><h2>My header</h2></p>"
