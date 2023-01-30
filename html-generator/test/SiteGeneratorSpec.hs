@@ -51,6 +51,13 @@ singlePageBodyExpectation markup expectedBody = actualBody `shouldBe` expectedBo
               actualBody = T.dropEnd footer . T.drop header $ actualHtml
 
 
+escapeCharacterSpec :: T.Text -> T.Text -> Spec
+escapeCharacterSpec input output = it (T.unpack ("Converts " <> input <> " to " <> output)) $
+        singlePageBodyExpectation
+            (input <> "\n") 
+            ("<p>" <> output <> "\n</p>")
+
+
 spec :: Spec
 spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "generates correct index and file tree" $ singlePageExpectation "" ""
@@ -78,3 +85,10 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
         "bla di\nbla bla\n\nbla bla bla\n ding\n"
         (  "<p>bla di\nbla bla\n</p>"
         <> "<p>bla bla bla\n ding\n</p>")
+
+    escapeCharacterSpec "e" "e"
+    escapeCharacterSpec "filler >" "filler &gt;"
+    escapeCharacterSpec "<" "&lt;"
+    escapeCharacterSpec "&" "&amp;"
+    escapeCharacterSpec "\"" "&quot;"
+    escapeCharacterSpec "'" "&#39;"

@@ -40,19 +40,8 @@ convertHeaderSpec = prop "Converts arbitrary number of * to header of correct we
                 (if w > 0 then "<p><h" <> showT w <> ">My header</h" <> showT w <> "></p>" else "<p>My header\n</p>")
 
 
-escapeCharacterSpec :: T.Text -> T.Text -> Spec
-escapeCharacterSpec input output = checkBodyConversion 
-        (T.unpack ("Converts " <> input <> " to " <> output))
-        input ("<p>" <> output <> "\n</p>")
-
-
 spec :: Spec
 spec = describe "HtmlGenerator.convert" $ do
         convertHeaderSpec
         newlineConvertSpec
         convertParagraphSpec
-        escapeCharacterSpec "filler >" "filler &gt;"
-        escapeCharacterSpec "<" "&lt;"
-        escapeCharacterSpec "&" "&amp;"
-        escapeCharacterSpec "\"" "&quot;"
-        escapeCharacterSpec "'" "&#39;"
