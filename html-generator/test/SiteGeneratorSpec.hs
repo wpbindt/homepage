@@ -92,3 +92,5 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     escapeCharacterSpec "&" "&amp;"
     escapeCharacterSpec "\"" "&quot;"
     escapeCharacterSpec "'" "&#39;"
+
+    it "Converts a paragraph to a paragraph" $ singlePageBodyExpectation "bla\n" "<p>bla\n</p>"

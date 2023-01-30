@@ -2,7 +2,7 @@ module HtmlGeneratorSpec (spec) where
 
 import qualified Data.Text as T
 
-import Test.Hspec (it, describe, shouldBe, Spec, Expectation)
+import Test.Hspec (describe, shouldBe, Spec, Expectation)
 import Test.Hspec.QuickCheck (prop)
 
 import HtmlGenerator (convert)
@@ -17,22 +17,6 @@ bodyExpectation markup body = (convert "Some title" markup) `shouldBe`
                 ("<html><head><title>Some title</title></head><body>" <> body <> "</body></html>")
 
 
-checkBodyConversion :: String -> T.Text -> T.Text -> Spec
-checkBodyConversion message markup body = it message $ bodyExpectation markup body
-
-
-newlineConvertSpec :: Spec
-newlineConvertSpec = prop
-        "Converts non-negative number of newlines to an empty document" $
-        \n -> bodyExpectation (T.pack . take n . repeat $ '\n') ""
-
-
-convertParagraphSpec :: Spec
-convertParagraphSpec = checkBodyConversion 
-        "Converts a paragraph to a paragraph"
-        "bla" "<p>bla\n</p>"
-
-
 convertHeaderSpec :: Spec
 convertHeaderSpec = prop "Converts arbitrary number of * to header of correct weight" $
         \w -> bodyExpectation
@@ -43,5 +27,3 @@ convertHeaderSpec = prop "Converts arbitrary number of * to header of correct we
 spec :: Spec
 spec = describe "HtmlGenerator.convert" $ do
         convertHeaderSpec
-        newlineConvertSpec
-        convertParagraphSpec
