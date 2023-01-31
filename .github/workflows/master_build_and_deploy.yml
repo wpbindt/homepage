@@ -39,7 +39,7 @@ jobs:
           chmod +x html-generator/html-generator
       - name: Run html-generator and generate index
         run: |
-          ./html-generator/html-generator content
+          ./html-generator/html-generator my-homepage
       - name: Upload generated html files
         uses: actions/upload-artifact@v2
         with:
