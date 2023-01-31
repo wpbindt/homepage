@@ -19,10 +19,9 @@ common common-settings
 library
     import: common-settings
     exposed-modules: 
-        HtmlGenerator
-            HtmlGenerator.Convert
-            HtmlGenerator.Html
-            HtmlGenerator.HtmlEscapedText
+        HtmlGenerator.Convert
+        HtmlGenerator.Html
+        HtmlGenerator.HtmlEscapedText
         Directory.Directory
         Directory.Tree
         Directory.Write
@@ -64,7 +63,6 @@ test-suite html-generator-test
     build-tool-depends:
         hspec-discover:hspec-discover
     other-modules:
-        HtmlGeneratorSpec
         HtmlEscapedTextSpec
         MarkupParsersSpec
         ParseSiteSpec
