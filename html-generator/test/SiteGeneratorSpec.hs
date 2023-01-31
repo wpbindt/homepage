@@ -2,9 +2,14 @@ module SiteGeneratorSpec (spec) where
 
 import qualified Data.Text as T
 import Test.Hspec (it, describe, shouldBe, Spec, Expectation)
+import Test.Hspec.QuickCheck (prop)
 
 import SiteGenerator
 import Directory.Directory
+
+
+showT :: (Show a) => a -> T.Text
+showT = T.pack . show
 
 
 singlePageInputDir :: T.Text -> Directory
@@ -62,9 +67,6 @@ spec :: Spec
 spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "generates correct index and file tree" $ singlePageExpectation "" ""
 
-    it "converts a header to a header" $ singlePageBodyExpectation "* My header\n" "<p><h1>My header</h1></p>"
-    it "converts a 2-header to a 2-header" $ singlePageBodyExpectation "** My header\n" "<p><h2>My header</h2></p>"
-
     it "converts > at the start of the line to <pre><code>" $ singlePageBodyExpectation
         ">def f():\n>    print('hi world')\n"
         (  "<p><pre><code>def f():\n"
@@ -94,3 +96,8 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     escapeCharacterSpec "'" "&#39;"
 
     it "Converts a paragraph to a paragraph" $ singlePageBodyExpectation "bla\n" "<p>bla\n</p>"
+
+    prop "Converts arbitrary number of * to header of correct weight" $
+            \w -> singlePageBodyExpectation
+                    ((T.pack . take w . repeat $ '*') <> "My header\n")
+                    (if w > 0 then "<p><h" <> showT w <> ">My header</h" <> showT w <> "></p>" else "<p>My header\n</p>")
