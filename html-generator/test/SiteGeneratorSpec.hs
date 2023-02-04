@@ -12,6 +12,38 @@ showT :: (Show a) => a -> T.Text
 showT = T.pack . show
 
 
+twoPageInputDir :: Directory
+twoPageInputDir = Directory "my-homepage" [notesDir] []
+    where notesDir = Directory "my-notes" [] [file1, file2]
+          file1 = File "page-1.mu" ""
+          file2 = File "page-bla.mu" ""
+
+
+twoPageOutputDir :: Directory
+twoPageOutputDir = Directory "static" [notesDir] [indexPage]
+    where notesDir = Directory "my-notes" [] [file1, file2]
+          file1 = File "page-1.html" html1
+          html1 = "<html><head><title>Page 1</title></head><body></body></html>"
+          file2 = File "page-bla.html" html2
+          html2 = "<html><head><title>Page bla</title></head><body></body></html>"
+          indexPage = File "index.html" indexContent
+          indexContent = T.unlines [
+              "<html>"
+              , "<head>"
+              , "<title>My homepage</title>"
+              , "</head>"
+              , "<body>"
+              , "<h1>My homepage</h1>"
+              , "<h2>My notes</h2>"
+              , "<ul>"
+              , "<li><a href=\"my-notes/page-1.html\">Page 1</a></li>"
+              , "<li><a href=\"my-notes/page-bla.html\">Page bla</a></li>"
+              , "</ul>"
+              , "</body>"
+              , "</html>"
+            ]
+
+
 singlePageInputDir :: T.Text -> Directory
 singlePageInputDir markup = Directory "my-homepage" [notesDir] []
         where notesDir = Directory "notes" [] [File "my-page.mu" markup]
@@ -101,3 +133,7 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
             \w -> singlePageBodyExpectation
                     ((T.pack . take w . repeat $ '*') <> "My header\n")
                     (if w > 0 then "<p><h" <> showT w <> ">My header</h" <> showT w <> "></p>" else "<p>My header\n</p>")
+
+    it "Renders correct index for multiple pages" $
+        convertMarkupDirToHtmlDir twoPageInputDir
+        `shouldBe` twoPageOutputDir

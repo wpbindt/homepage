@@ -63,9 +63,6 @@ test-suite html-generator-test
     build-tool-depends:
         hspec-discover:hspec-discover
     other-modules:
-        HtmlEscapedTextSpec
         MarkupParsersSpec
-        ParseSiteSpec
-        RenderSiteSpec
         SiteGeneratorSpec
         TitleSpec
