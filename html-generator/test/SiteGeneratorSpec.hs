@@ -49,11 +49,16 @@ singlePageInputDir markup = Directory "my-homepage" [notesDir] []
         where notesDir = Directory "notes" [] [File "my-page.mu" markup]
 
 
-singlePageInputDirWithCSS :: T.Text -> Directory
-singlePageInputDirWithCSS markup = Directory "my-homepage" [notesDir] []
+singlePageInputDirWithCSS :: Directory
+singlePageInputDirWithCSS = Directory "my-homepage" [notesDir] [File "styles.css" ""]
+        where notesDir = Directory "notes" [] [File "my-page.mu" ""]
+
+
+singlePageInputDirWithExtension :: String -> Directory
+singlePageInputDirWithExtension extension = Directory "my-homepage" [notesDir] []
         where notesDir = Directory "notes" []
-                [ File "my-page.mu" markup
-                , File "styles.css" ""
+                [ File "my-page.mu" ""
+                , File ("some-file." ++ extension) ""
                 ]
 
 
@@ -103,6 +108,29 @@ escapeCharacterSpec input output = it (T.unpack ("Converts " <> input <> " to " 
             ("<p>" <> output <> "\n</p>")
 
 
+singlePageOutputDirWithCSS :: Directory
+singlePageOutputDirWithCSS = Directory "static" [notesDir] [indexPage, cssFile]
+        where notesDir = Directory "notes" [] [pageFile]
+              pageFile = File "my-page.html" htmlContent
+              htmlContent = "<html><head><title>My page</title></head><body><body></html>"
+              indexPage = File "index.html" indexContent
+              indexContent = T.unlines [
+                    "<html>"
+                    , "<head>"
+                    , "<title>My homepage</title>"
+                    , "</head>"
+                    , "<body>"
+                    , "<h1>My homepage</h1>"
+                    , "<h2>Notes</h2>"
+                    , "<ul>"
+                    , "<li><a href=\"notes/my-page.html\">My page</a></li>"
+                    , "</ul>"
+                    , "</body>"
+                    , "</html>"
+                ]
+              cssFile = File "styles.css" ""
+
+
 spec :: Spec
 spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "generates correct index and file tree" $ singlePageExpectation "" ""
@@ -147,5 +175,9 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
         `shouldBe` twoPageOutputDir
 
     it "Ignores non-mu files" $
-        (convertMarkupDirToHtmlDir $ singlePageInputDirWithCSS "")
+        (convertMarkupDirToHtmlDir $ singlePageInputDirWithExtension "txt")
         `shouldBe` (singlePageOutputDir "")
+
+    it "Adds css files if present" $
+        (convertMarkupDirToHtmlDir $ singlePageInputDirWithCSS)
+        `shouldBe` singlePageOutputDirWithCSS  -- TODO make output of this test more specific
