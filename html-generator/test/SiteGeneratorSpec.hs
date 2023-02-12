@@ -49,6 +49,14 @@ singlePageInputDir markup = Directory "my-homepage" [notesDir] []
         where notesDir = Directory "notes" [] [File "my-page.mu" markup]
 
 
+singlePageInputDirWithCSS :: T.Text -> Directory
+singlePageInputDirWithCSS markup = Directory "my-homepage" [notesDir] []
+        where notesDir = Directory "notes" []
+                [ File "my-page.mu" markup
+                , File "styles.css" ""
+                ]
+
+
 singlePageOutputDir :: T.Text -> Directory
 singlePageOutputDir expectedHtml = Directory "static" [notesDir] [indexPage]
         where notesDir = Directory "notes" [] [pageFile]
@@ -137,3 +145,7 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "Renders correct index for multiple pages" $
         convertMarkupDirToHtmlDir twoPageInputDir
         `shouldBe` twoPageOutputDir
+
+    it "Ignores non-mu files" $
+        (convertMarkupDirToHtmlDir $ singlePageInputDirWithCSS "")
+        `shouldBe` (singlePageOutputDir "")

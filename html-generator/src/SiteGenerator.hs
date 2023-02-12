@@ -20,7 +20,7 @@ convertMarkupDirToHtmlDir = renderHtmlSite . convertMarkupSite . parseMarkupSite
 
 
 parseMarkupSite :: Directory -> Site Markup.Document
-parseMarkupSite = parseSite parseMarkup
+parseMarkupSite = parseSite parseMarkup . filterByExtension "mu"
 
 
 convertMarkupPage :: Page Markup.Document -> Page Html.Html
