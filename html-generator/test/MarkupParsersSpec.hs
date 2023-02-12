@@ -14,7 +14,7 @@ documentExpectation input expected = parseMarkup input
 
 
 spec :: Spec
-spec = describe "HtmlEscapedText" $ do
+spec = describe "parseMarkup" $ do
     it "Converts empty string to empty document" $ documentExpectation "" []
     it "Converts a header to document with single header" $ documentExpectation "* My header\n" [[Header 1 "My header"]]
     it "Converts normal text to document with normal text" $ documentExpectation "Some normal text\n\n" [[NormalText "Some normal text"]]
