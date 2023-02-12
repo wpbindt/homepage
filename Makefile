@@ -23,3 +23,7 @@ static: html-generator/html-generator
 .PHONY: clean-static
 clean-static:
 	-rm -rf static
+
+.PHONY: run-server
+run-server: static
+	python3 -m http.server --directory static
