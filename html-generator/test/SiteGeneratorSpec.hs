@@ -180,4 +180,4 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
 
     it "Adds css files if present" $
         (convertMarkupDirToHtmlDir $ singlePageInputDirWithCSS)
-        `shouldBe` singlePageOutputDirWithCSS  -- TODO make output of this test more specific
+        `shouldBe` singlePageOutputDirWithCSS
