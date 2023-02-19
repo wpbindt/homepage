@@ -19,13 +19,30 @@ import HtmlGenerator.HtmlEscapedText (HTMLEscapedText, escape, printEscaped)
 
 
 type Title = T.Text
-data Tag = Tag T.Text deriving (Eq, Show)
+type Attribute = (T.Text, T.Text)
+data Tag = Tag T.Text [Attribute] deriving (Eq, Show)
 data Html = Html Tag [Html] | PlainText HTMLEscapedText deriving (Eq, Show)
 
 
 render :: Html -> T.Text
 render (PlainText escapedText) = printEscaped escapedText
-render (Html (Tag tag) htmls) = "<" <> tag <> ">" <> (T.concat . map render $ htmls) <> "</" <> tag <> ">"
+render (Html tag htmls) = (openTag tag) <> (T.concat . map render $ htmls) <> (closeTag tag)
+
+
+openTag :: Tag -> T.Text
+openTag (Tag tag attributes) = "<" <> tag <> renderAttributes attributes <> ">"
+
+
+renderAttributes :: [Attribute] -> T.Text
+renderAttributes [] = ""
+renderAttributes attributes = " " <> T.intercalate " " (map renderAttribute attributes)
+
+renderAttribute :: Attribute -> T.Text
+renderAttribute (key, value) = key <> "=\"" <> value <> "\""
+
+
+closeTag :: Tag -> T.Text
+closeTag (Tag tag _) = "</" <> tag <> ">"
 
 
 plain_ :: T.Text -> Html
@@ -33,7 +50,7 @@ plain_ = PlainText . escape
 
 
 el :: T.Text -> [Html] -> Html
-el tag = Html (Tag tag) 
+el tag = Html (Tag tag []) 
 
 
 simpleTag :: T.Text -> T.Text -> Html
@@ -73,7 +90,7 @@ head_ = el "head"
 
 
 makeListItem :: Html -> Html
-makeListItem = Html (Tag "li") . pure
+makeListItem = Html (Tag "li" []) . pure
 
 
 ul_ :: [Html] -> Html
@@ -84,8 +101,12 @@ ol_ :: [Html] -> Html
 ol_ = el "ol" . map makeListItem
 
 
+stylesheet :: Html
+stylesheet = Html (Tag "link" [("rel", "stylesheet"), ("href", "../styles.css")]) []
+
+
 makeBasicHtml :: Title -> [Html] -> Html
 makeBasicHtml title tags = html_ $
-        [ head_ [title_ title]
+        [ head_ [title_ title, stylesheet]
         , body_ tags
         ]

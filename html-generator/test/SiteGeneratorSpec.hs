@@ -23,9 +23,9 @@ twoPageOutputDir :: Directory
 twoPageOutputDir = Directory "static" [notesDir] [indexPage]
     where notesDir = Directory "my-notes" [] [file1, file2]
           file1 = File "page-1.html" html1
-          html1 = "<html><head><title>Page 1</title></head><body></body></html>"
+          html1 = "<html><head><title>Page 1</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
           file2 = File "page-bla.html" html2
-          html2 = "<html><head><title>Page bla</title></head><body></body></html>"
+          html2 = "<html><head><title>Page bla</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
           indexPage = File "index.html" indexContent
           indexContent = T.unlines [
               "<html>"
@@ -67,7 +67,7 @@ singlePageOutputDir :: T.Text -> Directory
 singlePageOutputDir expectedHtml = Directory "static" [notesDir] [indexPage]
         where notesDir = Directory "notes" [] [pageFile]
               pageFile = File "my-page.html" (htmlHead <> expectedHtml <> htmlTail)
-              htmlHead = "<html><head><title>My page</title></head><body>"
+              htmlHead = "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body>"
               htmlTail = "</body></html>"
               indexPage = File "index.html" indexContent
               indexContent = T.unlines [
@@ -98,7 +98,7 @@ singlePageBodyExpectation markup expectedBody = actualBody `shouldBe` expectedBo
         where actualDir = convertMarkupDirToHtmlDir . singlePageInputDir $ markup
               actualNotesDir = head . getDirectories $ actualDir
               actualHtml = getContent . head . getFiles $ actualNotesDir
-              header = T.length "<html><head><title>My page</title></head><body>"
+              header = T.length "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body>"
               footer = T.length "</body></html>"
               actualBody = T.dropEnd footer . T.drop header $ actualHtml
 
@@ -114,7 +114,7 @@ singlePageOutputDirWithCSS :: Directory
 singlePageOutputDirWithCSS = Directory "static" [notesDir] [cssFile, indexPage]
         where notesDir = Directory "notes" [] [pageFile]
               pageFile = File "my-page.html" htmlContent
-              htmlContent = "<html><head><title>My page</title></head><body></body></html>"
+              htmlContent = "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
               indexPage = File "index.html" indexContent
               indexContent = T.unlines [
                     "<html>"
