@@ -32,6 +32,7 @@ renderIndexContent (Site title sections) = T.unlines $
                       "<html>" 
                       , "<head>" 
                       , "<title>" <> plainTitle <> "</title>" 
+                      , "<link rel=\"stylesheet\" href=\"styles.css\">"
                       , "</head>" 
                   ]
               renderedSections = concatMap renderIndexSection sections

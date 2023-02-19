@@ -28,7 +28,7 @@ filterFilesByExtension extension = filter $ isExtensionOf extension . getFileNam
 
 maybeHead :: [a] -> Maybe a
 maybeHead [] = Nothing
-maybeHead (x:xs) = Just x
+maybeHead (x:_) = Just x
 
 
 findByExtension :: String -> Directory -> Maybe File
