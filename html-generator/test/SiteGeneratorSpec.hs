@@ -109,10 +109,10 @@ escapeCharacterSpec input output = it (T.unpack ("Converts " <> input <> " to " 
 
 
 singlePageOutputDirWithCSS :: Directory
-singlePageOutputDirWithCSS = Directory "static" [notesDir] [indexPage, cssFile]
+singlePageOutputDirWithCSS = Directory "static" [notesDir] [cssFile, indexPage]
         where notesDir = Directory "notes" [] [pageFile]
               pageFile = File "my-page.html" htmlContent
-              htmlContent = "<html><head><title>My page</title></head><body><body></html>"
+              htmlContent = "<html><head><title>My page</title></head><body></body></html>"
               indexPage = File "index.html" indexContent
               indexContent = T.unlines [
                     "<html>"
