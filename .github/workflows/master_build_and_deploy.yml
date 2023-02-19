@@ -46,24 +46,24 @@ jobs:
           name: static
           path: static/
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: generate
-    steps:
-    - name: Check out repo
-      uses: actions/checkout@v1
-    - name: Download generated html files
-      uses: actions/download-artifact@v2
-      with:
-        name: static
-        path: static
-    - name: Build deploy image
-      run: |
-        make deploy-image
-      env:
-        VAULT_PASS: ${{ secrets.VAULT_PASS }}
-    - name: Deploy the website
-      run: |
-        make deploy-website
-      env:
-        VAULT_PASS: ${{ secrets.VAULT_PASS }}
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: generate
+  #   steps:
+  #   - name: Check out repo
+  #     uses: actions/checkout@v1
+  #   - name: Download generated html files
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       name: static
+  #       path: static
+  #   - name: Build deploy image
+  #     run: |
+  #       make deploy-image
+  #     env:
+  #       VAULT_PASS: ${{ secrets.VAULT_PASS }}
+  #   - name: Deploy the website
+  #     run: |
+  #       make deploy-website
+  #     env:
+  #       VAULT_PASS: ${{ secrets.VAULT_PASS }}

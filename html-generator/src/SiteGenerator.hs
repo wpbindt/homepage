@@ -15,12 +15,24 @@ import Site.Site
 import Site.Title
 
 
+(&&&) :: (a -> b) -> (a -> c) -> a -> (b, c)
+(&&&) f g x = (f x, g x)
+
+
 convertMarkupDirToHtmlDir :: Directory -> Directory
-convertMarkupDirToHtmlDir = renderHtmlSite . convertMarkupSite . parseMarkupSite
+convertMarkupDirToHtmlDir = uncurry maybeAddFile . (parseHtml &&& parseCSSFile)
+
+
+parseHtml :: Directory -> Directory
+parseHtml = renderHtmlSite . convertMarkupSite . parseMarkupSite
+
+
+parseCSSFile :: Directory -> Maybe File
+parseCSSFile = findByExtension "css"
 
 
 parseMarkupSite :: Directory -> Site Markup.Document
-parseMarkupSite = parseSite parseMarkup
+parseMarkupSite = parseSite parseMarkup . filterByExtension "mu"
 
 
 convertMarkupPage :: Page Markup.Document -> Page Html.Html

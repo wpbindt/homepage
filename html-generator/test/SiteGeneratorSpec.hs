@@ -23,14 +23,15 @@ twoPageOutputDir :: Directory
 twoPageOutputDir = Directory "static" [notesDir] [indexPage]
     where notesDir = Directory "my-notes" [] [file1, file2]
           file1 = File "page-1.html" html1
-          html1 = "<html><head><title>Page 1</title></head><body></body></html>"
+          html1 = "<html><head><title>Page 1</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
           file2 = File "page-bla.html" html2
-          html2 = "<html><head><title>Page bla</title></head><body></body></html>"
+          html2 = "<html><head><title>Page bla</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
           indexPage = File "index.html" indexContent
           indexContent = T.unlines [
               "<html>"
               , "<head>"
               , "<title>My homepage</title>"
+              , "<link rel=\"stylesheet\" href=\"styles.css\">"
               , "</head>"
               , "<body>"
               , "<h1>My homepage</h1>"
@@ -49,17 +50,31 @@ singlePageInputDir markup = Directory "my-homepage" [notesDir] []
         where notesDir = Directory "notes" [] [File "my-page.mu" markup]
 
 
+singlePageInputDirWithCSS :: Directory
+singlePageInputDirWithCSS = Directory "my-homepage" [notesDir] [File "styles.css" ""]
+        where notesDir = Directory "notes" [] [File "my-page.mu" ""]
+
+
+singlePageInputDirWithExtension :: String -> Directory
+singlePageInputDirWithExtension extension = Directory "my-homepage" [notesDir] []
+        where notesDir = Directory "notes" []
+                [ File "my-page.mu" ""
+                , File ("some-file." ++ extension) ""
+                ]
+
+
 singlePageOutputDir :: T.Text -> Directory
 singlePageOutputDir expectedHtml = Directory "static" [notesDir] [indexPage]
         where notesDir = Directory "notes" [] [pageFile]
               pageFile = File "my-page.html" (htmlHead <> expectedHtml <> htmlTail)
-              htmlHead = "<html><head><title>My page</title></head><body>"
+              htmlHead = "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body>"
               htmlTail = "</body></html>"
               indexPage = File "index.html" indexContent
               indexContent = T.unlines [
                     "<html>"
                     , "<head>"
                     , "<title>My homepage</title>"
+                    , "<link rel=\"stylesheet\" href=\"styles.css\">"
                     , "</head>"
                     , "<body>"
                     , "<h1>My homepage</h1>"
@@ -83,7 +98,7 @@ singlePageBodyExpectation markup expectedBody = actualBody `shouldBe` expectedBo
         where actualDir = convertMarkupDirToHtmlDir . singlePageInputDir $ markup
               actualNotesDir = head . getDirectories $ actualDir
               actualHtml = getContent . head . getFiles $ actualNotesDir
-              header = T.length "<html><head><title>My page</title></head><body>"
+              header = T.length "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body>"
               footer = T.length "</body></html>"
               actualBody = T.dropEnd footer . T.drop header $ actualHtml
 
@@ -93,6 +108,30 @@ escapeCharacterSpec input output = it (T.unpack ("Converts " <> input <> " to " 
         singlePageBodyExpectation
             (input <> "\n") 
             ("<p>" <> output <> "\n</p>")
+
+
+singlePageOutputDirWithCSS :: Directory
+singlePageOutputDirWithCSS = Directory "static" [notesDir] [cssFile, indexPage]
+        where notesDir = Directory "notes" [] [pageFile]
+              pageFile = File "my-page.html" htmlContent
+              htmlContent = "<html><head><title>My page</title><link rel=\"stylesheet\" href=\"../styles.css\"></link></head><body></body></html>"
+              indexPage = File "index.html" indexContent
+              indexContent = T.unlines [
+                    "<html>"
+                    , "<head>"
+                    , "<title>My homepage</title>"
+                    , "<link rel=\"stylesheet\" href=\"styles.css\">"
+                    , "</head>"
+                    , "<body>"
+                    , "<h1>My homepage</h1>"
+                    , "<h2>Notes</h2>"
+                    , "<ul>"
+                    , "<li><a href=\"notes/my-page.html\">My page</a></li>"
+                    , "</ul>"
+                    , "</body>"
+                    , "</html>"
+                ]
+              cssFile = File "styles.css" ""
 
 
 spec :: Spec
@@ -137,3 +176,11 @@ spec = describe "SiteGenerator.convertMarkupDirToHtmlDir" $ do
     it "Renders correct index for multiple pages" $
         convertMarkupDirToHtmlDir twoPageInputDir
         `shouldBe` twoPageOutputDir
+
+    it "Ignores non-mu files" $
+        (convertMarkupDirToHtmlDir $ singlePageInputDirWithExtension "txt")
+        `shouldBe` (singlePageOutputDir "")
+
+    it "Adds css files if present" $
+        (convertMarkupDirToHtmlDir $ singlePageInputDirWithCSS)
+        `shouldBe` singlePageOutputDirWithCSS
