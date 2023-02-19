@@ -17,7 +17,7 @@ html-generator/html-generator: build-html-generator-builder-image
 clean-html-generator:
 	html-generator/build.sh clean
 
-static: html-generator/html-generator
+static: clean-static html-generator/html-generator
 	html-generator/html-generator my-homepage
 
 .PHONY: clean-static
